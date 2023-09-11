@@ -1,0 +1,36 @@
+{
+  "compras": [
+    {
+      "id": 0,
+      "title": "ovo",
+      "check": false
+    },
+    {
+      "id": 1,
+      "title": "pão",
+      "check": false
+    },
+    {
+      "id": 2,
+      "title": "oléo",
+      "check": true
+    }
+  ],
+  "deveres": [
+    {
+      "id": 0,
+      "title": "limpar a casa",
+      "check": true
+    },
+    {
+      "id": 1,
+      "title": "fazer o pão",
+      "check": false
+    },
+    {
+      "id": 2,
+      "title": "comer o pão",
+      "check": false
+    }
+  ]
+}

@@ -1,5 +1,15 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
+const { exec } = require('child_process');
+
+exec('node src/backend/main.js', (error, stdout, stderr) => {
+  if (error) {
+    console.error(`Erro: ${error}`);
+    return;
+  }
+  console.log(`Saída padrão: ${stdout}`);
+  console.error(`Saída de erro: ${stderr}`);
+});
 
 require('electron-reload')(__dirname, {
   electron: require(`${__dirname}/node_modules/electron`)
