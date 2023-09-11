@@ -5,9 +5,12 @@ const List = require('../modules/List')
 
 app.use(express.json());
 
-app.get('/lists', (_, res) => {
+app.get('/lists', (req, res) => {
   List.getAllLists()
-  .then(data => res.send(data))
+  .then(data => {
+    if(req.query.names) data = Object.keys(data);
+    res.send(data);
+  })
   .catch(err => res.sendStatus(err));
 })
 

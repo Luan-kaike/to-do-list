@@ -51,6 +51,8 @@ app.whenReady().then(() => {
   ipcMain.on('closed', () => {
     app.quit();
   });
+
+  ipcMain('getListsNames')
 });
 
 app.on('window-all-closed', () => {
