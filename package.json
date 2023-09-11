@@ -1,0 +1,27 @@
+{
+  "name": "to-do-list",
+  "version": "1.0.0",
+  "description": "A to-do list with electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Luan-kaike/to-do-list.git"
+  },
+  "keywords": [
+    "Electron",
+    "to-list",
+    "backend"
+  ],
+  "author": "Luan Kaike",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^26.0.0",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
