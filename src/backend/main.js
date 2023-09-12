@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-let port = 3000
 
 const List = require('../modules/List');
 
@@ -23,16 +22,24 @@ app.get('/lists/:list', (req, res) => {
   .catch(err => res.send(err));
 });
 
-const createServer = () => {
-  const server = app.listen(port, () => {
-    console.log(`backend rodando em http://localhost:${port}`);
-  });
-  
-  server.on('error', (err) => {
-    if(err.code === 'EADDRINUSE'){
-      port += 1
-      createServer()
+const createServer = async () => {
+  return new Promise((resolve, reject) => {
+    const newPort = (port) => {
+      const server = app.listen(port, '::1', () => {
+        console.log(`backend rodando em http://localhost:${port}`);
+        const Url = server.address()
+        resolve(`http://[${Url.address}]:${Url.port}`);
+      });
+
+      server.on('error', (err) => {
+        if(err.code === 'EADDRINUSE'){
+          newPort(port+1)
+        }else 
+          reject(err);
+      })
     }
+
+    newPort(3000)
   })
 };
 
