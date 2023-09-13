@@ -6,6 +6,10 @@
   user-select: none;
 }
 
+nav > ul > li{
+  cursor: pointer;
+}
+
 body{
   width: 100vw;
   height: 100vh;

@@ -26,6 +26,7 @@ const createWindow = () => {
   });
 
   win.loadFile('./public/index.html');
+  win.webContents.openDevTools();
 };
 
 app.whenReady().then(() => {
@@ -36,13 +37,9 @@ app.whenReady().then(() => {
       createWindow();
   });
 
-  ipcMain.on('closed', () => {
-    app.quit();
-  });
-
-  ipcMain.on('API', (evet, {params, method, content}) => {
+  ipcMain.on('API', (e, {params, method, content, response}) => {
     http[method](params, content)
-    .then(({data}) => console.log(data))
+    .then(({data}) => e.sender.send(response, data))
     .catch(err => console.log(err));
   })
 });
