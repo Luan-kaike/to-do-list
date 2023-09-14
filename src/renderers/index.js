@@ -8,5 +8,5 @@ const testAPI = () => {
 
 addEventListener('DOMContentLoaded', () => {
   const btn = document.querySelector('button')
-  btn.addEventListener('click', testAPI)
+  btn.addEventListener('click', testAPI);
 })

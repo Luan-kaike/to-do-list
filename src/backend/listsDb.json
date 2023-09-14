@@ -3,34 +3,34 @@
     {
       "id": 0,
       "title": "ovo",
-      "check": false
+      "checked": false
     },
     {
       "id": 1,
       "title": "pão",
-      "check": false
+      "checked": false
     },
     {
       "id": 2,
       "title": "oléo",
-      "check": true
+      "checked": true
     }
   ],
   "deveres": [
     {
       "id": 0,
       "title": "limpar a casa",
-      "check": true
+      "checked": true
     },
     {
       "id": 1,
       "title": "fazer o pão",
-      "check": false
+      "checked": false
     },
     {
       "id": 2,
       "title": "comer o pão",
-      "check": false
+      "checked": false
     }
   ]
 }

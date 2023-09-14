@@ -22,6 +22,15 @@ app.get('/lists/:list', (req, res) => {
   .catch(err => res.send(err));
 });
 
+
+app.post('/lists/:list/:id', (req, res) => {
+  const list = req.params.list;
+  
+  List.getList(list)
+  .then(data => res.send(data))
+  .catch(err => res.send(err));
+});
+
 const createServer = async () => {
   return new Promise((resolve, reject) => {
     const newPort = (port) => {
