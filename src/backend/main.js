@@ -11,7 +11,7 @@ app.get('/lists', (req, res) => {
     if(req.query.names) data = Object.keys(data);
     res.send(data);
   })
-  .catch(err => res.sendStatus(err));
+  .catch(err => res.send(err));
 });
 
 app.get('/lists/:list', (req, res) => {
@@ -23,10 +23,11 @@ app.get('/lists/:list', (req, res) => {
 });
 
 
-app.post('/lists/:list/:id', (req, res) => {
+app.post('/lists/:list/newItem', (req, res) => {
+  const title = req.body.title;
   const list = req.params.list;
   
-  List.getList(list)
+  List.newItem(list, title)
   .then(data => res.send(data))
   .catch(err => res.send(err));
 });

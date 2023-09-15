@@ -26,10 +26,32 @@ const populateElement = (dadElement, content, tag='span', callback) => {
 };
 
 const populateList = (element, data) => {
+  Array.isArray(data)? data : data = [data];
+
   data.forEach(d => {
     const item = createItemList(d);
-    element.appendChild(item);
-  })
-}
+    if (element.firstChild) {
+      element.insertBefore(item, element.firstChild);
+    } else {
+      element.appendChild(item);
+    }
+  });
+};
 
-module.exports = { populateElement, populateList }
+const createNewItemField = (callback) => {
+  const label = document.querySelector('body > label');
+  label.innerHTML = '';
+
+  const input = document.createElement('input');
+  input.placeholder = 'limpar a casa';
+  input.addEventListener('keydown', (e) => 
+    e.key === 'Enter'? callback(input) : null);
+  label.appendChild(input);
+
+  const button = document.createElement('button');
+  button.innerHTML = 'criar';
+  button.addEventListener('click', () => callback(input));
+  label.appendChild(button);
+};
+
+module.exports = { populateElement, populateList, createNewItemField }

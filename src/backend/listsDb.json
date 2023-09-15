@@ -11,12 +11,32 @@
       "checked": false
     },
     {
-      "id": 2,
+      "id": 4,
       "title": "oléo",
       "checked": true
     }
   ],
   "deveres": [
+    {
+      "title": "iuo",
+      "id": 6,
+      "checked": false
+    },
+    {
+      "title": "óla",
+      "id": 5,
+      "checked": false
+    },
+    {
+      "title": "dizer olá",
+      "id": 4,
+      "checked": false
+    },
+    {
+      "title": "dizer olá",
+      "id": 3,
+      "checked": false
+    },
     {
       "id": 0,
       "title": "limpar a casa",
