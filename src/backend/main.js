@@ -32,6 +32,14 @@ app.post('/lists/:list/newItem', (req, res) => {
   .catch(err => res.send(err));
 });
 
+
+app.delete('/lists/:list/:id', (req, res) => {
+  const list = req.params.list;
+  const id = req.params.id;
+  List.deleteItem(list, id)
+  .then(status => res.sendStatus(200))
+  .catch(err => res.send(err))
+});
 const createServer = async () => {
   return new Promise((resolve, reject) => {
     const newPort = (port) => {

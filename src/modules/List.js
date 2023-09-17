@@ -40,4 +40,26 @@ const newItem = (list, title) => {
   });
 };
 
-module.exports = { getList, getAllLists, newItem }
+
+const deleteItem = (list, id) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(listsDb, 'utf-8', (err, data) => {
+      !err?? reject(err);
+
+      const dataJson = JSON.parse(data);
+      console.log(dataJson[list], typeof id)
+      dataJson[list] = dataJson[list].filter(i => i.id !== Number.parseInt(id))
+      console.log()
+      console.log(dataJson[list])
+      const dataStr = JSON.stringify(dataJson, null, 2);
+
+      fs.writeFile(listsDb, dataStr,'utf-8', (err, data) => {
+        !err?? reject(err);
+
+        resolve(200);
+      })
+    })
+  });
+};
+
+module.exports = { getList, getAllLists, newItem, deleteItem }

@@ -1,4 +1,6 @@
-const createItemList = ({id, title, checked}) => {
+const { ipcRenderer } = require('electron');
+
+const createItemList = ({id, title, checked, currentList}) => {
   const item = document.createElement('li');
   item.setAttribute('id', id);
 
@@ -10,6 +12,18 @@ const createItemList = ({id, title, checked}) => {
   inputCheck.type = 'checkbox';
   inputCheck.checked = checked;
   item.appendChild(inputCheck);
+
+  const buttonDelete = document.createElement('button');
+  buttonDelete.innerHTML = 'X';
+  buttonDelete.addEventListener('click', () => {
+    const params = `/lists/${currentList}/${id}`;
+    const method = 'delete';
+    const content = null;
+    const response = '';
+    ipcRenderer.send('API', { params, method, content, response });
+    item.remove();
+  });
+  item.appendChild(buttonDelete);
 
   return item;
 }
@@ -30,11 +44,8 @@ const populateList = (element, data) => {
 
   data.forEach(d => {
     const item = createItemList(d);
-    if (element.firstChild) {
-      element.insertBefore(item, element.firstChild);
-    } else {
-      element.appendChild(item);
-    }
+    element.firstChild? element.insertBefore(item, element.firstChild)
+      : element.appendChild(item);
   });
 };
 
@@ -44,8 +55,7 @@ const createNewItemField = (callback) => {
 
   const input = document.createElement('input');
   input.placeholder = 'limpar a casa';
-  input.addEventListener('keydown', (e) => 
-    e.key === 'Enter'? callback(input) : null);
+  input.addEventListener('keydown', (e) => e.key === 'Enter'? callback(input) : null);
   label.appendChild(input);
 
   const button = document.createElement('button');

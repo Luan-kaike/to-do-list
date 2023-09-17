@@ -11,7 +11,8 @@ backend.createServer()
 /*
 require('electron-reload')(__dirname, {
   electron: require(`${__dirname}/node_modules/electron`)
-});*/
+});
+*/
 
 let win;
 const createWindow = () => {
@@ -37,14 +38,14 @@ app.whenReady().then(() => {
       createWindow();
   });
 
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') 
+      app.quit();
+  });
+
   ipcMain.on('API', (e, {params, method, content, response}) => {
     http[method](params, content)
     .then(({data}) => e.sender.send(response, data))
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.code));
   });
-});
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') 
-    app.quit();
 });

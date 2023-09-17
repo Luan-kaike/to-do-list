@@ -1,7 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron')
 const Dom = require('./src/modules/Dom');
 
-let currentList = ''
+let currentList;
+
 contextBridge.exposeInMainWorld('communicate', {
   API: (params) => {
     ipcRenderer.send('API', params);
@@ -25,6 +26,8 @@ ipcRenderer.on('populateNav', (e, data) => {
 });
 
 ipcRenderer.on('populateUl', (e, data) => {
+  console.log(typeof data, data)
+  data.forEach(i => i.currentList = currentList);
   const callback = (input) => {
     const params = `/lists/${currentList}/newItem`;
     const method = 'post';
@@ -42,6 +45,7 @@ ipcRenderer.on('populateUl', (e, data) => {
 
 ipcRenderer.on('newItem', (e, data) => {
   const ul = document.querySelector('body > ul');
+  data.currentList = currentList
 
   Dom.populateList(ul, data, 1);
 });
