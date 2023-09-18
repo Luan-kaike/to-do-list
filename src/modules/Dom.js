@@ -1,29 +1,46 @@
 const { ipcRenderer } = require('electron');
 
 const createItemList = ({id, title, checked}) => {
+
+  const sendMsgEditBackEnd = (title, checked) => {
+    ipcRenderer.send('API', { 
+      params: `/lists/${currentList}/${id}`,
+      method: 'put', 
+      content: { 
+        title: title, 
+        checked: checked
+      },
+    });
+  }
+
   const currentList = document.querySelector('body > h1').innerHTML
   const item = document.createElement('li');
   item.setAttribute('id', id);
 
   const inputTitle = document.createElement('input');
   inputTitle.value = title;
+  inputTitle.disabled = true
+  inputTitle.addEventListener('blur', (e) => {
+    const input = e.target;
+    input.disabled = true;
+    sendMsgEditBackEnd(input.value, inputCheck.checked)
+  });
   item.appendChild(inputTitle);
 
   const inputCheck = document.createElement('input');
   inputCheck.type = 'checkbox';
   inputCheck.checked = checked;
-  inputCheck.addEventListener('click', () =>{
-    console.log(`/lists/${currentList}/${id}`)
-    ipcRenderer.send('API', { 
-      params: `/lists/${currentList}/${id}`,
-      method: 'put', 
-      content: { 
-        title: inputTitle.value, 
-        checked: inputCheck.checked 
-      },
-    });
-  });
+  inputCheck.addEventListener('click', () =>
+    sendMsgEditBackEnd(inputTitle.value, inputCheck.checked));
   item.appendChild(inputCheck);
+
+  const buttonEdit = document.createElement('button');
+  buttonEdit.innerHTML = 'EDIT'
+  buttonEdit.addEventListener('click', () => {
+    inputTitle.disabled = !inputTitle.disabled;
+    inputTitle.disabled? inputTitle.blur() : inputTitle.focus()
+  })
+  item.appendChild(buttonEdit);
 
   const buttonDelete = document.createElement('button');
   buttonDelete.innerHTML = 'X';
@@ -77,12 +94,14 @@ const createNewItemField = () => {
 
   const input = document.createElement('input');
   input.placeholder = 'limpar a casa';
-  input.addEventListener('keydown', (e) => e.key === 'Enter'? callback(input) : null);
+  input.addEventListener('keydown', (e) => e.key === 'Enter' && input.value.trim()
+    ? callback(input) : null);
   label.appendChild(input);
 
   const button = document.createElement('button');
   button.innerHTML = 'criar';
-  button.addEventListener('click', () => callback(input));
+  button.addEventListener('click', () => input.value.trim()? 
+    callback(input) : null);
   label.appendChild(button);
 };
 
