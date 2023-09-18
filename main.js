@@ -46,6 +46,6 @@ app.whenReady().then(() => {
   ipcMain.on('API', (e, {params, method, content, response}) => {
     http[method](params, content)
     .then(({data}) => e.sender.send(response, data))
-    .catch(err => console.log(err.code));
+    .catch(err => console.log(err));
   });
 });

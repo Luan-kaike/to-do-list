@@ -1,26 +1,31 @@
 {
   "compras": [
     {
-      "id": 0,
-      "title": "ovo",
-      "checked": false
-    },
-    {
-      "id": 1,
-      "title": "pão",
-      "checked": false
+      "title": "olá",
+      "checked": false,
+      "id": 0
     },
     {
       "id": 4,
       "title": "oléo",
       "checked": true
+    },
+    {
+      "title": "lolo",
+      "id": 2,
+      "checked": false
     }
   ],
   "deveres": [
     {
-      "id": 0,
       "title": "limpar a casa",
-      "checked": true
+      "checked": false,
+      "id": 0
+    },
+    {
+      "title": "oi",
+      "checked": false,
+      "id": 1
     }
   ]
 }

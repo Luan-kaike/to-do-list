@@ -1,6 +1,7 @@
 const { ipcRenderer } = require('electron');
 
-const createItemList = ({id, title, checked, currentList}) => {
+const createItemList = ({id, title, checked}) => {
+  const currentList = document.querySelector('body > h1').innerHTML
   const item = document.createElement('li');
   item.setAttribute('id', id);
 
@@ -11,16 +12,26 @@ const createItemList = ({id, title, checked, currentList}) => {
   const inputCheck = document.createElement('input');
   inputCheck.type = 'checkbox';
   inputCheck.checked = checked;
+  inputCheck.addEventListener('click', () =>{
+    console.log(`/lists/${currentList}/${id}`)
+    ipcRenderer.send('API', { 
+      params: `/lists/${currentList}/${id}`,
+      method: 'put', 
+      content: { 
+        title: inputTitle.value, 
+        checked: inputCheck.checked 
+      },
+    });
+  });
   item.appendChild(inputCheck);
 
   const buttonDelete = document.createElement('button');
   buttonDelete.innerHTML = 'X';
   buttonDelete.addEventListener('click', () => {
-    const params = `/lists/${currentList}/${id}`;
-    const method = 'delete';
-    const content = null;
-    const response = '';
-    ipcRenderer.send('API', { params, method, content, response });
+    ipcRenderer.send('API', { 
+      params:`/lists/${currentList}/${id}`,
+      method: 'delete'
+    });
     item.remove();
   });
   item.appendChild(buttonDelete);
@@ -49,9 +60,20 @@ const populateList = (element, data) => {
   });
 };
 
-const createNewItemField = (callback) => {
+const createNewItemField = () => {
+  const currentList = document.querySelector('body > h1').innerHTML;
   const label = document.querySelector('body > label');
   label.innerHTML = '';
+
+  const callback = (input) => {
+    const title = input.value
+    ipcRenderer.send('API', {
+      params: `/lists/${currentList}/newItem`, 
+      method: 'post',
+      content: { title },
+      response: 'newItem'
+    });
+  };
 
   const input = document.createElement('input');
   input.placeholder = 'limpar a casa';

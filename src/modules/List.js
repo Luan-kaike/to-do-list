@@ -3,6 +3,23 @@ const path = require('path');
 
 const listsDb = path.join(__dirname,'..','backend','listsDb.json')
 
+const modificationJson = (manipulate) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(listsDb, 'utf-8', (err, data) => {
+      !err?? reject(err);
+
+      const {response, dataStr} = manipulate(data);
+
+      fs.writeFile(listsDb, dataStr,'utf-8', (err, data) => {
+        !err?? reject(err);
+
+        resolve(response);
+      })
+    })
+  });
+}
+
+// GETS
 const getAllLists = () => {
   return new Promise((resolve, reject) => {
     fs.readFile(listsDb, 'utf-8', (err, data) => {
@@ -20,46 +37,57 @@ const getList = (list) => {
   })
 }
 
-
+// POSTS
 const newItem = (list, title) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(listsDb, 'utf-8', (err, data) => {
-      !err?? reject(err);
-
+    const manipulate = (data) => {
       const dataJson = JSON.parse(data);
-      const newItem = {title, id: dataJson[list].length, checked: false}
-      dataJson[list].unshift(newItem);
+      const newItem = {title, id: dataJson[list].length, checked: false};
+      dataJson[list].push(newItem);
+
       const dataStr = JSON.stringify(dataJson, null, 2);
+      return { dataStr, response: newItem };
+    };
 
-      fs.writeFile(listsDb, dataStr,'utf-8', (err, data) => {
-        !err?? reject(err);
-
-        resolve(newItem);
-      })
-    })
+    modificationJson(manipulate)
+    .then(data => resolve(data))
+    .catch(err => reject(err));
   });
 };
 
+// PUTS
+const editItem = (list, id, mod) => {
+  return new Promise((resolve, reject) => {
+    const manipulate = (data) => {
+      const dataJson = JSON.parse(data);
+      id = Number.parseInt(id)
+      mod.id = id;
+      dataJson[list] = dataJson[list].map(i => (i.id === id? mod : i = i) );
 
+      const dataStr = JSON.stringify(dataJson, null, 2);
+      return { dataStr, response: mod };
+    };
+    modificationJson(manipulate)
+    .then(data => resolve(data))
+    .catch(err => reject(err));
+  })
+};
+
+// DELETES
 const deleteItem = (list, id) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(listsDb, 'utf-8', (err, data) => {
-      !err?? reject(err);
-
+    const manipulate = (data) => {
       const dataJson = JSON.parse(data);
-      console.log(dataJson[list], typeof id)
-      dataJson[list] = dataJson[list].filter(i => i.id !== Number.parseInt(id))
-      console.log()
-      console.log(dataJson[list])
+      dataJson[list] = dataJson[list].filter(i => i.id !== Number.parseInt(id));
+
       const dataStr = JSON.stringify(dataJson, null, 2);
+      return { dataStr, response: 200 };
+    };
 
-      fs.writeFile(listsDb, dataStr,'utf-8', (err, data) => {
-        !err?? reject(err);
-
-        resolve(200);
-      })
-    })
+    modificationJson(manipulate)
+    .then(data => resolve(data))
+    .catch(err => reject(err));
   });
 };
 
-module.exports = { getList, getAllLists, newItem, deleteItem }
+module.exports = { getList, getAllLists, newItem, deleteItem, editItem }

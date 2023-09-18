@@ -1,8 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron')
 const Dom = require('./src/modules/Dom');
 
-let currentList;
-
 contextBridge.exposeInMainWorld('communicate', {
   API: (params) => {
     ipcRenderer.send('API', params);
@@ -14,29 +12,21 @@ ipcRenderer.on('populateNav', (e, data) => {
   nav.innerHTML = '';
 
   const callback = (e) => {
-    currentList = e.target.innerHTML
-    const params = `/lists/${e.target.innerHTML}`;
-    const method = 'get';
-    const content = null;
-    const response = 'populateUl';
-    ipcRenderer.send('API', { params, method, content, response });
+    const list = e.target.innerHTML
+    document.querySelector('body > h1').innerHTML = list
+    ipcRenderer.send('API', { 
+      params: `/lists/${list}`, 
+      method: 'get', 
+      content: '', 
+      response: 'populateUl' 
+    });
   };
 
   Dom.populateElement(nav, data, 'li', callback);
 });
 
 ipcRenderer.on('populateUl', (e, data) => {
-  console.log(typeof data, data)
-  data.forEach(i => i.currentList = currentList);
-  const callback = (input) => {
-    const params = `/lists/${currentList}/newItem`;
-    const method = 'post';
-    const content = { title: input.value };
-    const response = 'newItem';
-    input.value  = '';
-    ipcRenderer.send('API', { params, method, content, response });
-  };
-  Dom.createNewItemField(callback);
+  Dom.createNewItemField();
 
   const ul = document.querySelector('body > ul');
   ul.innerHTML = '';
@@ -45,7 +35,6 @@ ipcRenderer.on('populateUl', (e, data) => {
 
 ipcRenderer.on('newItem', (e, data) => {
   const ul = document.querySelector('body > ul');
-  data.currentList = currentList
 
   Dom.populateList(ul, data, 1);
 });

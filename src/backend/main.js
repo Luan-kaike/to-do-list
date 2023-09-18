@@ -5,6 +5,7 @@ const List = require('../modules/List');
 
 app.use(express.json());
 
+// GETS
 app.get('/lists', (req, res) => {
   List.getAllLists()
   .then(data => {
@@ -22,7 +23,7 @@ app.get('/lists/:list', (req, res) => {
   .catch(err => res.send(err));
 });
 
-
+// POST
 app.post('/lists/:list/newItem', (req, res) => {
   const title = req.body.title;
   const list = req.params.list;
@@ -32,7 +33,18 @@ app.post('/lists/:list/newItem', (req, res) => {
   .catch(err => res.send(err));
 });
 
+// PUTS
+app.put('/lists/:list/:id', (req, res) => {
+  const list = req.params.list;
+  const id = req.params.id;
+  const mod = req.body;
 
+  List.editItem(list, id, mod)
+  .then(data => res.send(data))
+  .catch(err => res.send(err));
+});
+
+// DELETES
 app.delete('/lists/:list/:id', (req, res) => {
   const list = req.params.list;
   const id = req.params.id;
@@ -40,6 +52,7 @@ app.delete('/lists/:list/:id', (req, res) => {
   .then(status => res.sendStatus(200))
   .catch(err => res.send(err))
 });
+
 const createServer = async () => {
   return new Promise((resolve, reject) => {
     const newPort = (port) => {
@@ -61,4 +74,6 @@ const createServer = async () => {
   })
 };
 
-module.exports = { createServer }
+// createServer();
+
+module.exports = { createServer };
