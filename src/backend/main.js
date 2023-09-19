@@ -28,8 +28,16 @@ app.post('/lists/:list/newItem', (req, res) => {
   const title = req.body.title;
   const list = req.params.list;
   
-  List.newItem(list, title)
-  .then(data => res.send(data))
+  List.newObj(list, title, false)
+  .then(data => res.sendStatus(201))
+  .catch(err => res.send(err));
+});
+
+app.post('/lists/:list/newList', (req, res) => {
+  const newList = req.params.list;
+
+  List.newObj(newList, '', true)
+  .then(data => res.sendStatus(201))
   .catch(err => res.send(err));
 });
 
@@ -39,8 +47,17 @@ app.put('/lists/:list/:id', (req, res) => {
   const id = req.params.id;
   const mod = req.body;
 
-  List.editItem(list, id, mod)
-  .then(data => res.send(data))
+  List.editObj(list, id, mod, false)
+  .then(data => res.sendStatus(201))
+  .catch(err => res.send(err));
+});
+
+app.put('/lists/:list', (req, res) => {
+  const list = req.params.list;
+  const mod = req.body;
+
+  List.editObj(list, '', mod, true)
+  .then(data => res.sendStatus(201))
   .catch(err => res.send(err));
 });
 
@@ -48,9 +65,16 @@ app.put('/lists/:list/:id', (req, res) => {
 app.delete('/lists/:list/:id', (req, res) => {
   const list = req.params.list;
   const id = req.params.id;
-  List.deleteItem(list, id)
-  .then(status => res.sendStatus(200))
-  .catch(err => res.send(err))
+  List.deleteObj(list, id, false)
+  .then(data => res.sendStatus(200))
+  .catch(err => res.send(err));
+});
+
+app.delete('/lists/:list', (req, res) => {
+  const list = req.params.list;
+  List.deleteObj(list, '', true)
+  .then(data => res.sendStatus(200))
+  .catch(err => res.send(err));
 });
 
 const createServer = async () => {
@@ -74,6 +98,6 @@ const createServer = async () => {
   })
 };
 
-// createServer();
+ createServer();
 
 module.exports = { createServer };

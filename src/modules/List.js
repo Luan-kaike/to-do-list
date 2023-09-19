@@ -38,15 +38,19 @@ const getList = (list) => {
 }
 
 // POSTS
-const newItem = (list, title) => {
+const newObj = (list, title, isList) => {
   return new Promise((resolve, reject) => {
     const manipulate = (data) => {
       const dataJson = JSON.parse(data);
-      const newItem = {title, id: dataJson[list].length, checked: false};
-      dataJson[list].push(newItem);
+      isList? 
+        dataJson[list] = [] 
+      :
+        dataJson[list].push(
+          {title, id: `${title}-${dataJson[list].length}`, checked: false}
+        );
 
       const dataStr = JSON.stringify(dataJson, null, 2);
-      return { dataStr, response: newItem };
+      return { dataStr, response: isList? dataJson[list] : newItem };
     };
 
     modificationJson(manipulate)
@@ -56,13 +60,20 @@ const newItem = (list, title) => {
 };
 
 // PUTS
-const editItem = (list, id, mod) => {
+const editObj = (list, id, mod, isList) => {
   return new Promise((resolve, reject) => {
     const manipulate = (data) => {
       const dataJson = JSON.parse(data);
-      id = Number.parseInt(id)
-      mod.id = id;
-      dataJson[list] = dataJson[list].map(i => (i.id === id? mod : i = i) );
+
+      if (isList){
+        const dataJsonKeys = Object.keys(dataJson);
+        const listContentKey = dataJsonKeys.find(l => l === list);
+        dataJson[mod] = dataJson[listContentKey];
+        delete dataJson[list];
+      }else{
+        mod.id = id;
+        dataJson[list] = dataJson[list].map(i => (i.id === id? mod : i = i) );
+      }
 
       const dataStr = JSON.stringify(dataJson, null, 2);
       return { dataStr, response: mod };
@@ -74,11 +85,15 @@ const editItem = (list, id, mod) => {
 };
 
 // DELETES
-const deleteItem = (list, id) => {
+const deleteObj = (list, id, isList) => {
   return new Promise((resolve, reject) => {
     const manipulate = (data) => {
       const dataJson = JSON.parse(data);
-      dataJson[list] = dataJson[list].filter(i => i.id !== Number.parseInt(id));
+
+      isList?
+        delete dataJson[list]
+      :
+        dataJson[list] = dataJson[list].filter(i => i.id === id);
 
       const dataStr = JSON.stringify(dataJson, null, 2);
       return { dataStr, response: 200 };
@@ -90,4 +105,4 @@ const deleteItem = (list, id) => {
   });
 };
 
-module.exports = { getList, getAllLists, newItem, deleteItem, editItem }
+module.exports = { getList, getAllLists, newObj, deleteObj, editObj }

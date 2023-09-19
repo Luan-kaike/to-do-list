@@ -3,29 +3,24 @@
     {
       "title": "olá",
       "checked": false,
-      "id": 0
+      "id": "pão-0"
     },
     {
-      "id": 4,
-      "title": "oléo",
-      "checked": true
-    },
-    {
-      "title": "lolo",
-      "id": 2,
-      "checked": false
+      "title": "loloytuytuytuyt",
+      "checked": false,
+      "id": "refri-2"
     }
   ],
   "deveres": [
     {
       "title": "limpar a casa",
       "checked": false,
-      "id": 0
+      "id": "comer-0"
     },
     {
-      "title": "limpar a casa do vizinha",
+      "title": "limpar a casa do ninguemjhgjhgjhg",
       "checked": true,
-      "id": 1
+      "id": "beber-1"
     }
   ]
 }

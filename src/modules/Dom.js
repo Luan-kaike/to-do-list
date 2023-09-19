@@ -20,10 +20,16 @@ const createItemList = ({id, title, checked}) => {
   const inputTitle = document.createElement('input');
   inputTitle.value = title;
   inputTitle.disabled = true
-  inputTitle.addEventListener('blur', (e) => {
-    const input = e.target;
-    input.disabled = true;
-    sendMsgEditBackEnd(input.value, inputCheck.checked)
+  const handleKeyDownInFocus = (e) => {
+    e.key === 'Enter'? inputTitle.blur() : null
+  }
+  inputTitle.addEventListener('blur', () => {
+    inputTitle.removeEventListener('keydown', handleKeyDownInFocus);
+    inputTitle.disabled = true;
+    sendMsgEditBackEnd(inputTitle.value, inputCheck.checked);
+  });
+  inputTitle.addEventListener('focus', () => {
+    inputTitle.addEventListener('keydown', handleKeyDownInFocus);
   });
   item.appendChild(inputTitle);
 
@@ -39,7 +45,7 @@ const createItemList = ({id, title, checked}) => {
   buttonEdit.addEventListener('click', () => {
     inputTitle.disabled = !inputTitle.disabled;
     inputTitle.disabled? inputTitle.blur() : inputTitle.focus()
-  })
+  });
   item.appendChild(buttonEdit);
 
   const buttonDelete = document.createElement('button');
