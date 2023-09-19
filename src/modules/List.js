@@ -42,6 +42,7 @@ const newObj = (list, title, isList) => {
   return new Promise((resolve, reject) => {
     const manipulate = (data) => {
       const dataJson = JSON.parse(data);
+
       isList? 
         dataJson[list] = [] 
       :
@@ -50,7 +51,8 @@ const newObj = (list, title, isList) => {
         );
 
       const dataStr = JSON.stringify(dataJson, null, 2);
-      return { dataStr, response: isList? dataJson[list] : newItem };
+      return { dataStr, response: isList? dataJson[list] : 
+        {title, id: `${title}-${dataJson[list].length}`, checked: false} };
     };
 
     modificationJson(manipulate)
@@ -72,7 +74,14 @@ const editObj = (list, id, mod, isList) => {
         delete dataJson[list];
       }else{
         mod.id = id;
-        dataJson[list] = dataJson[list].map(i => (i.id === id? mod : i = i) );
+        dataJson[list] = dataJson[list].map(i => {
+          if(i.id === id){
+            typeof mod.checked === 'boolean'? null : mod.checked = i.checked;
+            mod.title? null : mod.title = i.title;
+            return mod;
+          };
+          return i;
+        });
       }
 
       const dataStr = JSON.stringify(dataJson, null, 2);
@@ -93,10 +102,10 @@ const deleteObj = (list, id, isList) => {
       isList?
         delete dataJson[list]
       :
-        dataJson[list] = dataJson[list].filter(i => i.id === id);
+        dataJson[list] = dataJson[list].filter(i => i.id ==! id);
 
       const dataStr = JSON.stringify(dataJson, null, 2);
-      return { dataStr, response: 200 };
+      return { dataStr, response: dataJson[list] };
     };
 
     modificationJson(manipulate)

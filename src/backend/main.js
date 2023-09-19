@@ -29,7 +29,7 @@ app.post('/lists/:list/newItem', (req, res) => {
   const list = req.params.list;
   
   List.newObj(list, title, false)
-  .then(data => res.sendStatus(201))
+  .then(data => res.send(data))
   .catch(err => res.send(err));
 });
 
@@ -37,7 +37,7 @@ app.post('/lists/:list/newList', (req, res) => {
   const newList = req.params.list;
 
   List.newObj(newList, '', true)
-  .then(data => res.sendStatus(201))
+  .then(data => res.send(data))
   .catch(err => res.send(err));
 });
 
@@ -48,7 +48,7 @@ app.put('/lists/:list/:id', (req, res) => {
   const mod = req.body;
 
   List.editObj(list, id, mod, false)
-  .then(data => res.sendStatus(201))
+  .then(data => res.send(data))
   .catch(err => res.send(err));
 });
 
@@ -57,7 +57,7 @@ app.put('/lists/:list', (req, res) => {
   const mod = req.body;
 
   List.editObj(list, '', mod, true)
-  .then(data => res.sendStatus(201))
+  .then(data => res.send(data))
   .catch(err => res.send(err));
 });
 
@@ -65,15 +65,16 @@ app.put('/lists/:list', (req, res) => {
 app.delete('/lists/:list/:id', (req, res) => {
   const list = req.params.list;
   const id = req.params.id;
+
   List.deleteObj(list, id, false)
-  .then(data => res.sendStatus(200))
+  .then(data => res.send(data))
   .catch(err => res.send(err));
 });
 
 app.delete('/lists/:list', (req, res) => {
   const list = req.params.list;
   List.deleteObj(list, '', true)
-  .then(data => res.sendStatus(200))
+  .then(data => res.send(data))
   .catch(err => res.send(err));
 });
 
@@ -97,7 +98,5 @@ const createServer = async () => {
     newPort(3000)
   })
 };
-
- createServer();
 
 module.exports = { createServer };

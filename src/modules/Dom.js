@@ -1,62 +1,23 @@
 const { ipcRenderer } = require('electron');
+const elements = require('./Elements')
 
 const createItemList = ({id, title, checked}) => {
 
-  const sendMsgEditBackEnd = (title, checked) => {
-    ipcRenderer.send('API', { 
-      params: `/lists/${currentList}/${id}`,
-      method: 'put', 
-      content: { 
-        title: title, 
-        checked: checked
-      },
-    });
-  }
-
-  const currentList = document.querySelector('body > h1').innerHTML
+  const currentList = document.querySelector('body > h1').innerHTML;
+  const paramsEdit = `/lists/${currentList}/${id}`;
   const item = document.createElement('li');
-  item.setAttribute('id', id);
 
-  const inputTitle = document.createElement('input');
-  inputTitle.value = title;
-  inputTitle.disabled = true
-  const handleKeyDownInFocus = (e) => {
-    e.key === 'Enter'? inputTitle.blur() : null
-  }
-  inputTitle.addEventListener('blur', () => {
-    inputTitle.removeEventListener('keydown', handleKeyDownInFocus);
-    inputTitle.disabled = true;
-    sendMsgEditBackEnd(inputTitle.value, inputCheck.checked);
-  });
-  inputTitle.addEventListener('focus', () => {
-    inputTitle.addEventListener('keydown', handleKeyDownInFocus);
-  });
-  item.appendChild(inputTitle);
-
-  const inputCheck = document.createElement('input');
-  inputCheck.type = 'checkbox';
-  inputCheck.checked = checked;
-  inputCheck.addEventListener('click', () =>
-    sendMsgEditBackEnd(inputTitle.value, inputCheck.checked));
+  const inputCheck = elements.inputCheck(checked, paramsEdit)
   item.appendChild(inputCheck);
 
-  const buttonEdit = document.createElement('button');
-  buttonEdit.innerHTML = 'EDIT'
-  buttonEdit.addEventListener('click', () => {
-    inputTitle.disabled = !inputTitle.disabled;
-    inputTitle.disabled? inputTitle.blur() : inputTitle.focus()
-  });
+  const inputTitle = elements.inputTitle(title, paramsEdit);
+  item.appendChild(inputTitle);
+
+  const buttonEdit = elements.buttonEdit(inputTitle);
   item.appendChild(buttonEdit);
 
-  const buttonDelete = document.createElement('button');
-  buttonDelete.innerHTML = 'X';
-  buttonDelete.addEventListener('click', () => {
-    ipcRenderer.send('API', { 
-      params:`/lists/${currentList}/${id}`,
-      method: 'delete'
-    });
-    item.remove();
-  });
+  const deleteCallback = () => item.remove();
+  const buttonDelete = elements.buttonDelete(item, paramsEdit, deleteCallback);
   item.appendChild(buttonDelete);
 
   return item;
@@ -90,6 +51,7 @@ const createNewItemField = () => {
 
   const callback = (input) => {
     const title = input.value
+    input.value = ''
     ipcRenderer.send('API', {
       params: `/lists/${currentList}/newItem`, 
       method: 'post',

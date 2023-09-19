@@ -1,26 +1,15 @@
 {
-  "compras": [
-    {
-      "title": "olá",
-      "checked": false,
-      "id": "pão-0"
-    },
-    {
-      "title": "loloytuytuytuyt",
-      "checked": false,
-      "id": "refri-2"
-    }
-  ],
+  "compras": [],
   "deveres": [
     {
-      "title": "limpar a casa",
       "checked": false,
-      "id": "comer-0"
+      "id": "limpar o teclado-0",
+      "title": "limpar o tecladotghfhghf"
     },
     {
-      "title": "limpar a casa do ninguemjhgjhgjhg",
-      "checked": true,
-      "id": "beber-1"
+      "checked": false,
+      "id": "tomar banho-1",
+      "title": "hhh"
     }
   ]
 }
