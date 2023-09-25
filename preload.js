@@ -13,7 +13,7 @@ ipcRenderer.on('populateNav', (e, data) => {
 
   const callback = (e) => {
     const list = e.target.innerHTML
-    document.querySelector('body > h1 > p').innerHTML = list
+    document.querySelector('body > h1 > input').value = list
     ipcRenderer.send('API', { 
       params: `/lists/${list}`, 
       method: 'get', 

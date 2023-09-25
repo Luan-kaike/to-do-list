@@ -3,7 +3,7 @@ const Elements = require('./Elements')
 
 const createItemList = ({id, title, checked}) => {
 
-  const currentList = document.querySelector('body > h1 > p').innerHTML;
+  const currentList = document.querySelector('body > h1 > input').value;
   const paramsEdit = `/lists/${currentList}/${id}`;
   const item = document.createElement('li');
 
@@ -45,7 +45,7 @@ const populateList = (element, data) => {
 };
 
 const createNewItemField = () => {
-  const currentList = document.querySelector('body > h1 > p').innerHTML;
+  const currentList = document.querySelector('body > h1 > input').value;
   const label = document.querySelector('body > label');
   label.innerHTML = '';
 
@@ -75,20 +75,41 @@ const createNewItemField = () => {
 
 const createMainTitle = () => {
   const contentTitle = document.querySelector('body > h1 > span');
-  const currentList = document.querySelector('body > h1 > p');
+  const inputList = document.querySelector('body > h1 > input');
   const elementList = document.querySelector('body > ul');
-  contentTitle.innerHTML = '';
 
+  contentTitle.innerHTML = '';
+  const params = `/lists/${inputList.value}`;
+
+  const inputCallback = () => {
+    const nav = document.querySelectorAll('nav > ul > li')
+    const inputList = document.querySelector('body > h1 > input');
+    nav.forEach(l => {
+      l.innerHTML === inputList.oldValue? l.innerHTML = inputList.value : null;
+      console.log(l.innerHTML, inputList.value, inputList.oldValue);
+    });
+    inputList.oldValue = inputList.value
+  };
+  Elements.inputTitle(inputList.value, params, inputCallback, inputList);
+  inputList.setAttribute('oldValue', '');
+  inputList.oldValue = inputList.value;
 
   const deleteCallback = () => {
     const nav = document.querySelectorAll('nav > ul > li');
-    nav.forEach(l => l.innerHTML === currentList.innerHTML? l.remove() : null)
-    currentList.innerHTML = 'uma lista';
-    elementList.innerHTML = ''
-  }
-  const buttonDelete = 
-    Elements.buttonDelete(`/lists/${currentList.innerHTML}`, deleteCallback);
+    nav.forEach(l => l.innerHTML === inputList.value? l.remove() : null);
+    inputList.value = 'uma lista';
+    elementList.innerHTML = '';
+    document.querySelector('body > label').innerHTML = '';
+  };
+  const buttonDelete = Elements.buttonDelete(params, deleteCallback);
   contentTitle.appendChild(buttonDelete);
+
+  const editCallback = (btn) => {
+    btn.classList.add('disabled');
+    setTimeout(() => btn.classList.remove('disabled'), 1000);
+  };
+  const btnEdit = Elements.buttonEdit(inputList, editCallback);
+  contentTitle.appendChild(btnEdit);
 };
 
 module.exports = { populateElement, populateList, createNewItemField, createMainTitle }

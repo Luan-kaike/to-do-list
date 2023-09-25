@@ -46,17 +46,18 @@ app.put('/lists/:list/:id', (req, res) => {
   const list = req.params.list;
   const id = req.params.id;
   const mod = req.body;
+  console.log(list, id, mod)
 
   List.editObj(list, id, mod, false)
   .then(data => res.send(data))
   .catch(err => res.send(err));
 });
 
-app.put('/lists/:list', (req, res) => {
+app.put('/lists/:list', async (req, res) => {
   const list = req.params.list;
-  const mod = req.body;
+  const mod = req.body.title;
 
-  List.editObj(list, '', mod, true)
+  await List.editObj(list, '', mod, true)
   .then(data => res.send(data))
   .catch(err => res.send(err));
 });

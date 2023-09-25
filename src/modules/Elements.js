@@ -22,16 +22,17 @@ const buttonDelete = (params, callback) => {
       params: params,
       method: 'delete'
     });
-    callback();
+    callback? callback() : null;
   });
 
   return svg;
 };
 
-const buttonEdit = (input) => {
+const buttonEdit = (input, callback) => {
   const { svg } = createSvg(icons.edit);
 
-  svg.addEventListener('click', () => {
+  svg.addEventListener('click', (e) => {
+    callback? callback(svg) : null;
     input.disabled = false;
     input.focus();
   });
@@ -39,14 +40,15 @@ const buttonEdit = (input) => {
   return svg;
 };
 
-const inputTitle = (title, params) => {
-  const inputTitle = document.createElement('input');
+const inputTitle = (title, params, callback, input) => {
+  const inputTitle = input? input : document.createElement('input');
   inputTitle.value = title;
   inputTitle.disabled = true;
   const handleKeyDownInFocus = (e) => {
     inputTitle.disabled = e.key === 'Enter'
   }
   inputTitle.addEventListener('blur', () => {
+    callback? callback() : null;
     ipcRenderer.send('API', { 
       params,
       method: 'put', 
@@ -54,9 +56,9 @@ const inputTitle = (title, params) => {
         title: inputTitle.value,
       },
     });
-    inputTitle.disabled = true
+    inputTitle.disabled = true;
     inputTitle.removeEventListener('keydown', handleKeyDownInFocus);
-  })
+  });
   inputTitle.addEventListener('focus', () => {
     inputTitle.addEventListener('keydown', handleKeyDownInFocus);
   });

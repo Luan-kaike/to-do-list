@@ -26,9 +26,11 @@ svg, path{
   cursor: pointer;
 }
 
-input:disabled {
-  background-color: #ff0000;
+*:disabled, .disabled{
+  fill: #f00;
+  background-color: #f00;
   color: #000;
+  pointer-events: none;
 }
 
 h1{

@@ -52,7 +52,7 @@ const newObj = (list, title, isList) => {
 
       const dataStr = JSON.stringify(dataJson, null, 2);
       return { dataStr, response: isList? dataJson[list] : 
-        {title, id: `${title}-${dataJson[list].length}`, checked: false} };
+        {title, id: `${title}-${dataJson[list].length-1}`, checked: false} };
     };
 
     modificationJson(manipulate)
@@ -68,10 +68,8 @@ const editObj = (list, id, mod, isList) => {
       const dataJson = JSON.parse(data);
 
       if (isList){
-        const dataJsonKeys = Object.keys(dataJson);
-        const listContentKey = dataJsonKeys.find(l => l === list);
-        dataJson[mod] = dataJson[listContentKey];
-        delete dataJson[list];
+        dataJson[mod] = dataJson[list];
+        mod !== list? delete dataJson[list] : null;
       }else{
         mod.id = id;
         dataJson[list] = dataJson[list].map(i => {
@@ -82,11 +80,12 @@ const editObj = (list, id, mod, isList) => {
           };
           return i;
         });
-      }
+      };
 
       const dataStr = JSON.stringify(dataJson, null, 2);
       return { dataStr, response: mod };
     };
+
     modificationJson(manipulate)
     .then(data => resolve(data))
     .catch(err => reject(err));
