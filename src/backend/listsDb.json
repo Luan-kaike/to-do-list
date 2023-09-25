@@ -1,15 +1,22 @@
 {
-  "compras": [],
   "deveres": [
     {
-      "checked": false,
-      "id": "limpar o teclado-0",
-      "title": "limpar o tecladotghfhghf"
+      "title": "poipoipou",
+      "id": "poipoipou-0",
+      "checked": false
+    }
+  ],
+  "deveres2": [],
+  "dev": [
+    {
+      "title": "olá",
+      "id": "olá-0",
+      "checked": false
     },
     {
-      "checked": false,
-      "id": "tomar banho-1",
-      "title": "hhh"
+      "title": "tudo bem?",
+      "id": "tudo bem?-1",
+      "checked": false
     }
   ]
 }

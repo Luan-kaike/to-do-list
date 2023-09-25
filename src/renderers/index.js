@@ -6,6 +6,6 @@ const init = () => {
   });
 };
 
-addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   init();
 });

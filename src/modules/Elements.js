@@ -14,7 +14,7 @@ const createSvg = (icon) => {
   return { path, svg };
 };
 
-const buttonDelete = (elementDad, params, callback) => {
+const buttonDelete = (params, callback) => {
   const { svg } = createSvg(icons.trash);
   
   svg.addEventListener('click', () => {
@@ -37,7 +37,7 @@ const buttonEdit = (input) => {
   });
 
   return svg;
-}
+};
 
 const inputTitle = (title, params) => {
   const inputTitle = document.createElement('input');
@@ -56,13 +56,13 @@ const inputTitle = (title, params) => {
     });
     inputTitle.disabled = true
     inputTitle.removeEventListener('keydown', handleKeyDownInFocus);
-  });
+  })
   inputTitle.addEventListener('focus', () => {
     inputTitle.addEventListener('keydown', handleKeyDownInFocus);
   });
 
   return inputTitle;
-}
+};
 
 const inputCheck = (checked, params) => {
   const inputCheck = document.createElement('input');
@@ -78,7 +78,7 @@ const inputCheck = (checked, params) => {
     });
   });
 
-  return inputCheck
-}
+  return inputCheck;
+};
 
 module.exports = { buttonDelete, buttonEdit, inputTitle, inputCheck }

@@ -1,35 +1,35 @@
 const { ipcRenderer } = require('electron');
-const elements = require('./Elements')
+const Elements = require('./Elements')
 
 const createItemList = ({id, title, checked}) => {
 
-  const currentList = document.querySelector('body > h1').innerHTML;
+  const currentList = document.querySelector('body > h1 > p').innerHTML;
   const paramsEdit = `/lists/${currentList}/${id}`;
   const item = document.createElement('li');
 
-  const inputCheck = elements.inputCheck(checked, paramsEdit)
+  const inputCheck = Elements.inputCheck(checked, paramsEdit)
   item.appendChild(inputCheck);
 
-  const inputTitle = elements.inputTitle(title, paramsEdit);
+  const inputTitle = Elements.inputTitle(title, paramsEdit);
   item.appendChild(inputTitle);
 
-  const buttonEdit = elements.buttonEdit(inputTitle);
+  const buttonEdit = Elements.buttonEdit(inputTitle);
   item.appendChild(buttonEdit);
 
   const deleteCallback = () => item.remove();
-  const buttonDelete = elements.buttonDelete(item, paramsEdit, deleteCallback);
+  const buttonDelete = Elements.buttonDelete(paramsEdit, deleteCallback);
   item.appendChild(buttonDelete);
 
   return item;
-}
+};
 
 const populateElement = (dadElement, content, tag='span', callback) => {
   Array.isArray(content)? content : content = [content];
   
   content.forEach(c => {
     const childElement = document.createElement(tag);
-    childElement.innerHTML = c;
-    childElement.addEventListener('click', callback);
+    c? childElement.innerHTML = c : null;
+    callback? childElement.addEventListener('click', callback) : null;
     dadElement.appendChild(childElement);
   });
 };
@@ -45,7 +45,7 @@ const populateList = (element, data) => {
 };
 
 const createNewItemField = () => {
-  const currentList = document.querySelector('body > h1').innerHTML;
+  const currentList = document.querySelector('body > h1 > p').innerHTML;
   const label = document.querySelector('body > label');
   label.innerHTML = '';
 
@@ -73,4 +73,22 @@ const createNewItemField = () => {
   label.appendChild(button);
 };
 
-module.exports = { populateElement, populateList, createNewItemField }
+const createMainTitle = () => {
+  const contentTitle = document.querySelector('body > h1 > span');
+  const currentList = document.querySelector('body > h1 > p');
+  const elementList = document.querySelector('body > ul');
+  contentTitle.innerHTML = '';
+
+
+  const deleteCallback = () => {
+    const nav = document.querySelectorAll('nav > ul > li');
+    nav.forEach(l => l.innerHTML === currentList.innerHTML? l.remove() : null)
+    currentList.innerHTML = 'uma lista';
+    elementList.innerHTML = ''
+  }
+  const buttonDelete = 
+    Elements.buttonDelete(`/lists/${currentList.innerHTML}`, deleteCallback);
+  contentTitle.appendChild(buttonDelete);
+};
+
+module.exports = { populateElement, populateList, createNewItemField, createMainTitle }
