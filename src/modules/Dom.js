@@ -66,11 +66,9 @@ const createNewItemField = () => {
     ? callback(input) : null);
   label.appendChild(input);
 
-  const button = document.createElement('button');
-  button.innerHTML = 'criar';
-  button.addEventListener('click', () => input.value.trim()? 
-    callback(input) : null);
-  label.appendChild(button);
+  const btnAddCallback = () => input.value.trim()? callback(input) : null;
+  const buttonAdd = Elements.buttonPlus(btnAddCallback);
+  label.appendChild(buttonAdd);
 };
 
 const createMainTitle = () => {
@@ -86,7 +84,6 @@ const createMainTitle = () => {
     const inputList = document.querySelector('body > h1 > input');
     nav.forEach(l => {
       l.innerHTML === inputList.oldValue? l.innerHTML = inputList.value : null;
-      console.log(l.innerHTML, inputList.value, inputList.oldValue);
     });
     inputList.oldValue = inputList.value
   };

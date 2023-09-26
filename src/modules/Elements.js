@@ -40,6 +40,16 @@ const buttonEdit = (input, callback) => {
   return svg;
 };
 
+buttonPlus = (callback) => {
+  const { svg } = createSvg(icons.plus);
+
+  svg.addEventListener('click', () => {
+    callback(svg);
+  });
+
+  return svg;
+};
+
 const inputTitle = (title, params, callback, input) => {
   const inputTitle = input? input : document.createElement('input');
   inputTitle.value = title;
@@ -83,4 +93,4 @@ const inputCheck = (checked, params) => {
   return inputCheck;
 };
 
-module.exports = { buttonDelete, buttonEdit, inputTitle, inputCheck }
+module.exports = { buttonDelete, buttonEdit, inputTitle, inputCheck, buttonPlus }
