@@ -40,7 +40,7 @@ const buttonEdit = (input, callback) => {
   return svg;
 };
 
-buttonPlus = (callback) => {
+const buttonPlus = (callback) => {
   const { svg } = createSvg(icons.plus);
 
   svg.addEventListener('click', () => {
@@ -50,16 +50,16 @@ buttonPlus = (callback) => {
   return svg;
 };
 
-const inputTitle = (title, params, callback, input) => {
+const inputTitle = (value, params, callback, input) => {
   const inputTitle = input? input : document.createElement('input');
-  inputTitle.value = title;
+  inputTitle.value = value;
   inputTitle.disabled = true;
   const handleKeyDownInFocus = (e) => {
-    inputTitle.disabled = e.key === 'Enter'
+    inputTitle.disabled = e.key === 'Enter';
   }
   inputTitle.addEventListener('blur', () => {
-    callback? callback() : null;
-    ipcRenderer.send('API', { 
+    callback? callback(inputTitle) : null;
+    ipcRenderer.send('API', API?? {
       params,
       method: 'put', 
       content: {
@@ -75,6 +75,33 @@ const inputTitle = (title, params, callback, input) => {
 
   return inputTitle;
 };
+
+const inputNewLIst = () => {
+  const input = document.createElement('input');
+  const thisListExist = (list) => {
+    const arrayLi = document.querySelectorAll('nav > ul > li')
+    const thisListExist = [...arrayLi].find((l) => l.innerHTML === list) && list !== '';
+    return thisListExist
+  } 
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      input.blur();
+      const ListExist = thisListExist(input.value);
+
+      if(ListExist){
+        input.style.border = '2px solid #f00';
+        return;
+      };
+      ipcRenderer.send('API', {
+        params: `/lists/${input.value}/newList`,
+        method: 'post', 
+        response: 'newList'
+      });
+      input.value = '';
+    };
+  });
+  return input;
+}
 
 const inputCheck = (checked, params) => {
   const inputCheck = document.createElement('input');
@@ -93,4 +120,4 @@ const inputCheck = (checked, params) => {
   return inputCheck;
 };
 
-module.exports = { buttonDelete, buttonEdit, inputTitle, inputCheck, buttonPlus }
+module.exports = { buttonDelete, buttonEdit, inputTitle, inputNewLIst, inputCheck, buttonPlus };

@@ -7,5 +7,6 @@ const init = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  window.communicate.init();
   init();
 });

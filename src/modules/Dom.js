@@ -109,4 +109,19 @@ const createMainTitle = () => {
   contentTitle.appendChild(btnEdit);
 };
 
-module.exports = { populateElement, populateList, createNewItemField, createMainTitle }
+const initVerticalBar = () => {
+  const label = document.querySelector('nav > label');
+
+  const input = Elements.inputNewLIst()
+  input.placeholder = 'nova lista';
+  label.appendChild(input);
+
+  const callback = () => {
+    const eventKeyEnter = new KeyboardEvent('keydown', { key: 'Enter' });
+    input.dispatchEvent(eventKeyEnter);
+  };
+  const btnPlus = Elements.buttonPlus(callback);
+  label.appendChild(btnPlus);
+};
+
+module.exports = { populateElement, populateList, createNewItemField, createMainTitle, initVerticalBar };

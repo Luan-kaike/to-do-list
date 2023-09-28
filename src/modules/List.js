@@ -10,7 +10,7 @@ const modificationJson = (manipulate) => {
 
       const {response, dataStr} = manipulate(data);
 
-      fs.writeFile(listsDb, dataStr,'utf-8', (err, data) => {
+      fs.writeFile(listsDb, dataStr,'utf-8', (err) => {
         !err?? reject(err);
 
         resolve(response);
@@ -42,17 +42,15 @@ const newObj = (list, title, isList) => {
   return new Promise((resolve, reject) => {
     const manipulate = (data) => {
       const dataJson = JSON.parse(data);
+      const contentItem = isList? '' : {title, id: `${title}-${dataJson[list].length-1}`, checked: false}
 
       isList? 
         dataJson[list] = [] 
       :
-        dataJson[list].push(
-          {title, id: `${title}-${dataJson[list].length}`, checked: false}
-        );
+        dataJson[list].push(contentItem);
 
       const dataStr = JSON.stringify(dataJson, null, 2);
-      return { dataStr, response: isList? dataJson[list] : 
-        {title, id: `${title}-${dataJson[list].length-1}`, checked: false} };
+      return { dataStr, response: isList? list : contentItem };
     };
 
     modificationJson(manipulate)
