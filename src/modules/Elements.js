@@ -50,6 +50,30 @@ const buttonPlus = (callback) => {
   return svg;
 };
 
+const inputCheck = (checked, params) => {
+  const icon = checked? icons.checkTrue : icons.checkFalse;
+
+  const { svg, path } = createSvg(icon);
+  svg.setAttribute('checked', '');
+  svg.checked = checked;
+
+  svg.addEventListener('click', () => {
+    svg.checked = !svg.checked;
+
+    path.setAttribute('d', svg.checked? icons.checkTrue.d : icons.checkFalse.d);
+
+    ipcRenderer.send('API', { 
+      params,
+      method: 'put',
+      content: { 
+        checked: svg.checked
+      },
+    });
+  });
+
+  return svg;
+};
+
 const inputTitle = (value, params, callback) => {
   const inputTitle = document.createElement('input');
   inputTitle.value = value;
@@ -75,6 +99,8 @@ const inputTitle = (value, params, callback) => {
 
   return inputTitle;
 };
+
+
 
 const inputNewLIst = () => {
   const input = document.createElement('input');
@@ -133,23 +159,6 @@ const displayList = (list, callback) => {
   li.appendChild(btnEdit);
 
   return li
-};
-
-const inputCheck = (checked, params) => {
-  const inputCheck = document.createElement('input');
-  inputCheck.type = 'checkbox';
-  inputCheck.checked = checked;
-  inputCheck.addEventListener('click', () => {
-    ipcRenderer.send('API', { 
-      params,
-      method: 'put', 
-      content: { 
-        checked: inputCheck.checked
-      },
-    });
-  });
-
-  return inputCheck;
 };
 
 module.exports = { buttonDelete, buttonEdit, inputTitle, inputNewLIst, inputCheck, buttonPlus, displayList };
