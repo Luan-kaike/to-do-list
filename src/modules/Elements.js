@@ -50,8 +50,8 @@ const buttonPlus = (callback) => {
   return svg;
 };
 
-const inputTitle = (value, params, callback, input) => {
-  const inputTitle = input? input : document.createElement('input');
+const inputTitle = (value, params, callback) => {
+  const inputTitle = document.createElement('input');
   inputTitle.value = value;
   inputTitle.disabled = true;
   const handleKeyDownInFocus = (e) => {
@@ -59,9 +59,9 @@ const inputTitle = (value, params, callback, input) => {
   }
   inputTitle.addEventListener('blur', () => {
     callback? callback(inputTitle) : null;
-    ipcRenderer.send('API', API?? {
+    ipcRenderer.send('API', {
       params,
-      method: 'put', 
+      method: 'put',
       content: {
         title: inputTitle.value,
       },
@@ -79,12 +79,12 @@ const inputTitle = (value, params, callback, input) => {
 const inputNewLIst = () => {
   const input = document.createElement('input');
   const thisListExist = (list) => {
-    const arrayLi = document.querySelectorAll('nav > ul > li')
-    const thisListExist = [...arrayLi].find((l) => l.innerHTML === list) && list !== '';
-    return thisListExist
+    const arrayLi = document.querySelectorAll('nav > ul > li');
+    const thisListExist = [...arrayLi].find((l) => l.innerHTML === list);
+    return thisListExist;
   } 
   input.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter'){
+    if(e.key === 'Enter' && input.value.trim() !== ''){
       input.blur();
       const ListExist = thisListExist(input.value);
 
@@ -92,16 +92,48 @@ const inputNewLIst = () => {
         input.style.border = '2px solid #f00';
         return;
       };
+
       ipcRenderer.send('API', {
         params: `/lists/${input.value}/newList`,
-        method: 'post', 
+        method: 'post',
         response: 'newList'
       });
       input.value = '';
     };
   });
   return input;
-}
+};
+
+const displayList = (list, callback) => {
+  const params = `/lists/${list}`;
+  const li = document.createElement('li');
+  li.addEventListener('click', () => callback(li))
+
+  const inputCallback = (input) => {
+    document.querySelector('aside > h1').innerHTML = input.value;
+  };
+  const inputList = inputTitle(list, params, inputCallback)
+  li.appendChild(inputList);
+
+  const deleteCallback = () => {
+    const ul = document.querySelectorAll('nav > ul > li');
+    ul.forEach(i => {
+      i.querySelector('input').value === inputList.value? i.remove() : null;
+    });
+    document.querySelector('aside > label').innerHTML = '';
+  };
+  const btnDelete = buttonDelete(params, deleteCallback);
+  li.appendChild(btnDelete);
+
+  const editCallback = (btn) => {
+    btn.classList.add('disabled');
+    setTimeout(() => btn.classList.remove('disabled'), 1000);
+  };
+  const btnEdit = buttonEdit(inputList, editCallback);
+  li.appendChild(btnEdit);
+
+  return li
+};
 
 const inputCheck = (checked, params) => {
   const inputCheck = document.createElement('input');
@@ -120,4 +152,4 @@ const inputCheck = (checked, params) => {
   return inputCheck;
 };
 
-module.exports = { buttonDelete, buttonEdit, inputTitle, inputNewLIst, inputCheck, buttonPlus };
+module.exports = { buttonDelete, buttonEdit, inputTitle, inputNewLIst, inputCheck, buttonPlus, displayList };

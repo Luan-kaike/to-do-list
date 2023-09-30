@@ -1,60 +1,54 @@
 const { contextBridge, ipcRenderer } = require('electron');
 const Dom = require('./src/modules/Dom');
+const Elements = require('./src/modules/Elements');
 
 contextBridge.exposeInMainWorld('communicate', {
   API: (params) => {
     ipcRenderer.send('API', params);
-  },
-  init: () => Dom.initVerticalBar()
+  }
 });
 
 ipcRenderer.on('populateNav', (e, data) => {
+  Array.isArray(data)? data : data = [data];
   const nav = document.querySelector('nav > ul');
-  nav.innerHTML = '';
 
-  const callback = (e) => {
-    const list = e.target.innerHTML
-    document.querySelector('body > h1 > input').value = list
+  const callback = (li) => {
+    const input = li.querySelector('input');
+    const list = input.value;
+    document.querySelector('aside > h1').innerHTML = list;
     ipcRenderer.send('API', { 
-      params: `/lists/${list}`, 
-      method: 'get', 
+      params: `/lists/${list}`,
+      method: 'get',
       content: '', 
       response: 'populateUl' 
     });
   };
+  data.forEach(d => {
+    const li = Elements.displayList(d, callback);
+    nav.appendChild(li);
+  });
 
-  Dom.populateElement(nav, data, 'li', callback);
+  Dom.initVerticalBar();
 });
 
 ipcRenderer.on('populateUl', (e, data) => {
   Dom.createNewItemField();
 
-  const ul = document.querySelector('body > ul');
+  const ul = document.querySelector('aside > ul');
   ul.innerHTML = '';
   Dom.populateList(ul, data);
-
-  Dom.createMainTitle();
 });
 
 ipcRenderer.on('newItem', (e, data) => {
-  const ul = document.querySelector('body > ul');
+  const ul = document.querySelector('aside > ul');
 
   Dom.populateList(ul, data, 1);
 });
 
 ipcRenderer.on('newList', (e, data) => {
   const nav = document.querySelector('nav > ul');
-  const callback = (e) => {
-    const list = e.target.innerHTML
-    document.querySelector('body > h1 > input').value = list
-    ipcRenderer.send('API', { 
-      params: `/lists/${list}`, 
-      method: 'get', 
-      content: '', 
-      response: 'populateUl' 
-    });
-  };
-  console.log(data)
-  Dom.populateElement(nav, data, 'li', callback);
+  console.log(data);
+  const newList = Elements.displayList(data);
+  nav.appendChild(newList);
 });
 

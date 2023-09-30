@@ -1,9 +1,9 @@
 const { ipcRenderer } = require('electron');
-const Elements = require('./Elements')
+const Elements = require('./Elements');
 
 const createItemList = ({id, title, checked}) => {
 
-  const currentList = document.querySelector('body > h1 > input').value;
+  const currentList = document.querySelector('aside > h1').innerHTML;
   const paramsEdit = `/lists/${currentList}/${id}`;
   const item = document.createElement('li');
 
@@ -45,8 +45,8 @@ const populateList = (element, data) => {
 };
 
 const createNewItemField = () => {
-  const currentList = document.querySelector('body > h1 > input').value;
-  const label = document.querySelector('body > label');
+  const currentList = document.querySelector('aside > h1').innerHTML;
+  const label = document.querySelector('aside > label');
   label.innerHTML = '';
 
   const callback = (input) => {
@@ -71,44 +71,6 @@ const createNewItemField = () => {
   label.appendChild(buttonAdd);
 };
 
-const createMainTitle = () => {
-  const contentTitle = document.querySelector('body > h1 > span');
-  const inputList = document.querySelector('body > h1 > input');
-  const elementList = document.querySelector('body > ul');
-
-  contentTitle.innerHTML = '';
-  const params = `/lists/${inputList.value}`;
-
-  const inputCallback = () => {
-    const nav = document.querySelectorAll('nav > ul > li')
-    const inputList = document.querySelector('body > h1 > input');
-    nav.forEach(l => {
-      l.innerHTML === inputList.oldValue? l.innerHTML = inputList.value : null;
-    });
-    inputList.oldValue = inputList.value
-  };
-  Elements.inputTitle(inputList.value, params, inputCallback, inputList);
-  inputList.setAttribute('oldValue', '');
-  inputList.oldValue = inputList.value;
-
-  const deleteCallback = () => {
-    const nav = document.querySelectorAll('nav > ul > li');
-    nav.forEach(l => l.innerHTML === inputList.value? l.remove() : null);
-    inputList.value = 'uma lista';
-    elementList.innerHTML = '';
-    document.querySelector('body > label').innerHTML = '';
-  };
-  const buttonDelete = Elements.buttonDelete(params, deleteCallback);
-  contentTitle.appendChild(buttonDelete);
-
-  const editCallback = (btn) => {
-    btn.classList.add('disabled');
-    setTimeout(() => btn.classList.remove('disabled'), 1000);
-  };
-  const btnEdit = Elements.buttonEdit(inputList, editCallback);
-  contentTitle.appendChild(btnEdit);
-};
-
 const initVerticalBar = () => {
   const label = document.querySelector('nav > label');
 
@@ -124,4 +86,4 @@ const initVerticalBar = () => {
   label.appendChild(btnPlus);
 };
 
-module.exports = { populateElement, populateList, createNewItemField, createMainTitle, initVerticalBar };
+module.exports = { populateElement, populateList, createNewItemField, initVerticalBar };
