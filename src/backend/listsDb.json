@@ -1,9 +1,5 @@
 {
-  "deveres1": [
-    {
-      "checked": true,
-      "id": "olá--1",
-      "title": "olá"
-    }
-  ]
+  "deveres": [],
+  "olá": [],
+  "oi": []
 }

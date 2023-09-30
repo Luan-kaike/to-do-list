@@ -47,8 +47,19 @@ ipcRenderer.on('newItem', (e, data) => {
 
 ipcRenderer.on('newList', (e, data) => {
   const nav = document.querySelector('nav > ul');
-  console.log(data);
-  const newList = Elements.displayList(data);
+
+  const callback = (li) => {
+    const input = li.querySelector('input');
+    const list = input.value;
+    document.querySelector('aside > h1').innerHTML = list;
+    ipcRenderer.send('API', { 
+      params: `/lists/${list}`,
+      method: 'get',
+      content: '', 
+      response: 'populateUl' 
+    });
+  };
+  const newList = Elements.displayList(data, callback);
   nav.appendChild(newList);
 });
 

@@ -4,17 +4,34 @@
   box-sizing: border-box;
   transition: .2s;
   user-select: none;
+  border: none;
 }
 
-nav > ul > li{
-  cursor: pointer;
+*:disabled, .disabled{
+  fill: #f00;
+  background-color: #f00;
+  color: #000;
+  pointer-events: none;
+}
+
+*:focus{
+  outline: #f00;
+}
+
+:root {
+  --main-bg-color: #fff;
+  --second-bg-color: #cf8700;
+
+  --main-color: #000;
+
+  --width-verticalBar: 30vw;
 }
 
 body{
   width: 100vw;
   height: 100vh;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--main-bg-color);
+  color: var(--main-color);
 }
 
 aside > ul, aside > label{
@@ -28,50 +45,8 @@ svg, path{
   cursor: pointer;
 }
 
-*:disabled, .disabled{
-  fill: #f00;
-  background-color: #f00;
-  color: #000;
-  pointer-events: none;
-}
-
-nav{
-  width: 30vw;
-  height: 100vh;
-  position: absolute;
-  flex-direction: column;
-  left: 0;
-  display: flex;
-  align-items: center;
-  background-color: #cf8700;
-  margin-bottom: 50px;
-}
-
-nav > ul{
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  list-style: none;
-}
-
-nav > ul > li{
-  margin: 5%;
-}
-
-nav > span > input{
-  z-index: -1;
-  position: absolute;
-  right: 0;
-  transition: transform .2s ease-in-out;
-}
-
-nav > span{
-  display: flex;
-  width: 20%;
-  flex-direction: row;
-  justify-content: flex-end;
-  padding-right: 5%;
+nav > ul > li > input{
+  width: 70%;
 }
 
 h1{
