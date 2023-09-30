@@ -146,7 +146,6 @@ const displayList = (list, callback) => {
     ul.forEach(i => {
       i.querySelector('input').value === inputList.value? i.remove() : null;
     });
-    document.querySelector('aside > label').innerHTML = '';
   };
   const btnDelete = buttonDelete(params, deleteCallback);
   li.appendChild(btnDelete);

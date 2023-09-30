@@ -7,10 +7,8 @@
   border: none;
 }
 
-*:disabled, .disabled{
-  fill: #f00;
-  background-color: #f00;
-  color: #000;
+*:disabled,
+.disabled{
   pointer-events: none;
 }
 
@@ -20,9 +18,11 @@
 
 :root {
   --main-bg-color: #fff;
-  --second-bg-color: #cf8700;
+  --second-bg-color: #000;
 
-  --main-color: #000;
+  --main-color: #fff;
+  --second-color: #000;
+  --third-color: #0f0;
 
   --width-verticalBar: 30vw;
 }
@@ -34,26 +34,11 @@ body{
   color: var(--main-color);
 }
 
-aside > ul, aside > label{
-  display: flex;
-  justify-content: center;
-  width: 100vw;
-}
-
-svg, path{
-  fill: #fff;
+svg{
   cursor: pointer;
 }
 
-nav > ul > li > input{
-  width: 70%;
-}
-
-h1{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: max(30px, 8vw);
-  font: 900;
-  margin-bottom: 20vw;
+input{
+  padding: 2%;
+  padding-inline: 4%;
 }

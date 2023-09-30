@@ -1,0 +1,61 @@
+
+aside{
+  position: absolute;
+  left: var(--width-verticalBar);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100vw - var(--width-verticalBar));
+  height: 100vh;
+}
+
+aside > h1{
+  color: var(--second-bg-color);
+  margin-top: 5vw;
+  font-size: 2rem;
+  margin-bottom: 10vw;
+}
+
+aside > label{
+  width: 45%;
+  align-items: center;
+  justify-content: space-around;
+  display: flex;
+}
+
+aside > label > svg{
+  fill: var(--third-color);
+  height: 85%;
+}
+
+aside > label > input{
+  width: 70%;
+  border-radius: 0;
+  border-bottom: 1px #000 solid;
+}
+
+aside > ul{
+  margin: 5vw;
+  width: 50%;
+  list-style: none;
+}
+
+aside > ul > li{
+  display: flex;
+  align-items: center;
+  background-color: var(--main-bg-color);
+  padding: 5%;
+  border-radius: 15px;
+  justify-content: space-between;
+}
+
+aside > ul > li > input{
+  background-color: #0000;
+  color: var(--second-color);
+  border-bottom: var(--second-color) 1px solid;
+  width: 70%;
+}
+
+aside > ul > li > svg{
+  fill: var(--second-color);
+}

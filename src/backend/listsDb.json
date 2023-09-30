@@ -1,5 +1,9 @@
 {
-  "deveres": [],
-  "olá": [],
-  "oi": []
+  "compras": [
+    {
+      "checked": false,
+      "id": "carro--1",
+      "title": "oi"
+    }
+  ]
 }

@@ -8,23 +8,29 @@ contextBridge.exposeInMainWorld('communicate', {
   }
 });
 
+const listCallback = (li) => {
+  const input = li.querySelector('input');
+  const list = input.value;
+  document.querySelector('aside > h1').innerHTML = list;
+
+  document.querySelectorAll('nav > ul > li').forEach(l => {
+    l.style.transform = ''
+  });
+  li.style.transform = 'translateX(5px)';
+  ipcRenderer.send('API', { 
+    params: `/lists/${list}`,
+    method: 'get',
+    content: '', 
+    response: 'populateUl' 
+  });
+};
+
 ipcRenderer.on('populateNav', (e, data) => {
   Array.isArray(data)? data : data = [data];
   const nav = document.querySelector('nav > ul');
 
-  const callback = (li) => {
-    const input = li.querySelector('input');
-    const list = input.value;
-    document.querySelector('aside > h1').innerHTML = list;
-    ipcRenderer.send('API', { 
-      params: `/lists/${list}`,
-      method: 'get',
-      content: '', 
-      response: 'populateUl' 
-    });
-  };
   data.forEach(d => {
-    const li = Elements.displayList(d, callback);
+    const li = Elements.displayList(d, listCallback);
     nav.appendChild(li);
   });
 
@@ -48,18 +54,7 @@ ipcRenderer.on('newItem', (e, data) => {
 ipcRenderer.on('newList', (e, data) => {
   const nav = document.querySelector('nav > ul');
 
-  const callback = (li) => {
-    const input = li.querySelector('input');
-    const list = input.value;
-    document.querySelector('aside > h1').innerHTML = list;
-    ipcRenderer.send('API', { 
-      params: `/lists/${list}`,
-      method: 'get',
-      content: '', 
-      response: 'populateUl' 
-    });
-  };
-  const newList = Elements.displayList(data, callback);
+  const newList = Elements.displayList(data, listCallback);
   nav.appendChild(newList);
 });
 
