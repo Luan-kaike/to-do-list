@@ -6,7 +6,6 @@
   transition: .2s;
   user-select: none;
   border: none;
-  font-family: 'Roboto', sans-serif;
 }
 
 *:disabled,

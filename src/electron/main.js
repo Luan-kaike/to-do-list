@@ -1,36 +1,15 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, ipcMain } = require('electron');
 const path = require('path');
 const axios = require('axios');
-let http
 
-const backend = require('./src/backend/main');
-backend.createServer()
+let http
+require('../backend/main')
 .then(baseURL => http = axios.create({ baseURL }))
 .catch(err => console.log(err));
 
-/*
-require('electron-reload')(__dirname, {
-  electron: require(`${__dirname}/node_modules/electron`)
-});
-*/
-
-let win;
-const createWindow = () => {
-  win = new BrowserWindow({
-    width: 800,
-    height: 800,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true,
-      sandbox: false,
-    }
-  });
-
-  win.loadFile('./public/index.html');
-};
-
 app.whenReady().then(() => {
-  createWindow();
+  const win = require('./CreateWindow.js');
+  const tray = require('./CreateTray.js');
   win.webContents.openDevTools();
 
   app.on('activate', () => {
@@ -44,7 +23,7 @@ app.whenReady().then(() => {
   });
 
   ipcMain.on('API', (e, {params, method, content, response}) => {
-    response? null : response = 'null'
+    response? null : response = 'null';
     http[method](params, content)
     .then(({data}) => e.sender.send(response, data))
     .catch(err => console.log(err));

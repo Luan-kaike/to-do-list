@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
-const Dom = require('./src/modules/Dom');
-const Elements = require('./src/modules/Elements');
+const Dom = require('../modules/Dom');
+const { displayList } = require('../modules/Elements');
 
 contextBridge.exposeInMainWorld('communicate', {
   API: (params) => {
@@ -30,7 +30,7 @@ ipcRenderer.on('populateNav', (e, data) => {
   const nav = document.querySelector('nav > ul');
 
   data.forEach(d => {
-    const li = Elements.displayList(d, listCallback);
+    const li = displayList(d, listCallback);
     nav.appendChild(li);
   });
 
@@ -54,7 +54,7 @@ ipcRenderer.on('newItem', (e, data) => {
 ipcRenderer.on('newList', (e, data) => {
   const nav = document.querySelector('nav > ul');
 
-  const newList = Elements.displayList(data, listCallback);
+  const newList = displayList(data, listCallback);
   nav.appendChild(newList);
 });
 

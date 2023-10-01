@@ -100,4 +100,4 @@ const createServer = async () => {
   })
 };
 
-module.exports = { createServer };
+module.exports = createServer();
