@@ -12,6 +12,7 @@ const listCallback = (li) => {
   const input = li.querySelector('input');
   const list = input.value;
   document.querySelector('aside > h1').innerHTML = list;
+  document.querySelector('body > div').style.zIndex = -1;
 
   document.querySelectorAll('nav > ul > li').forEach(l => {
     l.style.transform = ''

@@ -18,4 +18,4 @@ const createWindow = () => {
   return win;
 };
 
-module.exports = createWindow()
+module.exports = createWindow();

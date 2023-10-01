@@ -100,8 +100,6 @@ const inputTitle = (value, params, callback) => {
   return inputTitle;
 };
 
-
-
 const inputNewLIst = () => {
   const input = document.createElement('input');
   const thisListExist = (list) => {
@@ -133,7 +131,7 @@ const inputNewLIst = () => {
 const displayList = (list, callback) => {
   const params = `/lists/${list}`;
   const li = document.createElement('li');
-  li.addEventListener('click', () => callback(li))
+  li.addEventListener('click', () => callback(li));
 
   const inputCallback = (input) => {
     document.querySelector('aside > h1').innerHTML = input.value;
@@ -142,6 +140,11 @@ const displayList = (list, callback) => {
   li.appendChild(inputList);
 
   const deleteCallback = () => {
+    const toHideHomeScreen = () => {
+      const div = document.querySelector('body > div');
+      setTimeout(() => div.style.zIndex = 1, 1);
+    };
+    toHideHomeScreen();
     const ul = document.querySelectorAll('nav > ul > li');
     ul.forEach(i => {
       i.querySelector('input').value === inputList.value? i.remove() : null;

@@ -1,20 +1,5 @@
 
-aside{
-  position: absolute;
-  left: var(--width-verticalBar);
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  width: calc(100vw - var(--width-verticalBar));
-  height: 100vh;
-}
-
 aside > h1{
-  color: var(--second-bg-color);
-  margin-top: 5vw;
-  font-size: 2rem;
   margin-bottom: 10vw;
 }
 

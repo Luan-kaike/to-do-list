@@ -1,0 +1,39 @@
+
+div > span{
+  margin-bottom: 20vw;
+}
+
+div > ul{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  list-style: none;
+  width: 50%;
+  height: 50%;
+}
+
+div > ul > li{
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+div > ul > li > p{
+  text-align: center;
+  width: 50%;
+}
+
+div > ul > li > span{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  gap: 1px;
+}
+
+div > ul > li > span > kbd{
+  border: 1px var(--second-color) solid;
+  padding-inline: 2%;
+  padding-block: 4%;
+}

@@ -9,4 +9,4 @@ const createTray = () => {
   return tray;
 };
 
-module.exports = createTray()
+module.exports = createTray();

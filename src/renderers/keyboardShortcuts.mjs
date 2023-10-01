@@ -6,8 +6,11 @@ const hiddenAndViewVerticalBar = (e) => {
     nav.style.transform = `translateX(${isHidden? 0 : -100}%)`;
 
     const aside = document.querySelector('aside');
-    aside.style.transform = `translateX(${isHidden? 0 : '-50%'})`;
-    aside.style.left = `${isHidden? 'var(--width-verticalBar)' : '50vw'}`;
+    const div = document.querySelector('body > div');
+    [aside, div].forEach(e => {
+      e.style.transform = `translateX(${isHidden? 0 : '-50%'})`;
+      e.style.left = `${isHidden? 'var(--width-verticalBar)' : '50vw'}`;
+    });
   };
 };
 
