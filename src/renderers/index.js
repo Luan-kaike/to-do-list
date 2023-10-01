@@ -1,3 +1,5 @@
+import { initShortcuts } from './keyboardShortcuts.mjs'
+
 const init = () => {
   window.communicate.API({ 
     params: '/lists?names=true', 
@@ -7,6 +9,6 @@ const init = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  
+  initShortcuts();
   init();
 });

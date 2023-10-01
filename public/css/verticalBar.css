@@ -17,14 +17,6 @@ nav::-webkit-scrollbar{
   opacity: 0;
 }
 
-nav > span{
-  position: fixed;
-  bottom: 2%;
-  cursor: pointer;
-  border-inline: 20px solid transparent;
-  border-bottom: 20px solid #fff;
-}
-
 nav > ul{
   width: 90%;
   display: flex;
