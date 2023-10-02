@@ -1,7 +1,7 @@
 const icons = require('./Icons');
 const { ipcRenderer } = require('electron')
 
-const showAlert = (msg) => {
+const showAlert = (msg, time=1) => {
   const playSound = () => {
     const audioContext = new window.AudioContext();
     const oscillator = audioContext.createOscillator();
@@ -19,8 +19,9 @@ const showAlert = (msg) => {
   playSound();
   const alert = document.querySelector('body > span');
   alert.innerHTML = msg;
-  alert.style.transform = 'translateX(-15vw)';
-  setTimeout(() => alert.style.transform = 'translateX(15vw)', 1300);
+  const visibleAlert = alert.style.transform === 'translateX(-15vw)'
+  visibleAlert? null :alert.style.transform = 'translateX(-15vw)';
+  setTimeout(() => alert.style.transform = 'translateX(15vw)', time * 1000);
 };
 
 const createSvg = (icon) => {
@@ -138,7 +139,12 @@ const inputNewLIst = () => {
 
       const isListExist = thisListExist();
       if(isListExist){
-        showAlert('essa lista já existe');
+        showAlert('essa lista já existe', 2.5);
+        return;
+      };
+
+      if(input.value.trim().length > 20){
+        showAlert('máximo de 20 caracteres', 2.5);
         return;
       };
 

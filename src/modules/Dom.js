@@ -56,8 +56,10 @@ const createNewItemField = () => {
     console.log(tasks)
     const isTaskExist = [...tasks]?.find(({value}) => value === title);
 
-    if(!isTaskExist){
-      input.value = ''
+    if(input.value.trim().length > 20){
+      Elements.showAlert('máximo de 20 caracteres', 2.5);
+    } else if(!isTaskExist){
+      input.value = '';
       ipcRenderer.send('API', {
         params: `/lists/${currentList}/newItem`, 
         method: 'post',
@@ -65,7 +67,7 @@ const createNewItemField = () => {
         response: 'newItem'
       });
     } else {
-      Elements.showAlert('essa tarefa já existe');
+      Elements.showAlert('essa tarefa já existe', 2.5);
     };
   };
 
