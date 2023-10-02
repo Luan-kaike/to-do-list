@@ -2,6 +2,21 @@ const icons = require('./Icons');
 const { ipcRenderer } = require('electron')
 
 const showAlert = (msg) => {
+  const playSound = () => {
+    const audioContext = new window.AudioContext();
+    const oscillator = audioContext.createOscillator();
+    oscillator.connect(audioContext.destination);
+
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    gainNode.gain.value = 0.05;
+
+    oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + .10);
+  };
+  playSound();
   const alert = document.querySelector('body > span');
   alert.innerHTML = msg;
   alert.style.transform = 'translateX(-15vw)';
@@ -124,7 +139,6 @@ const inputNewLIst = () => {
       const isListExist = thisListExist();
       if(isListExist){
         showAlert('essa lista já existe');
-        input.value = '';
         return;
       };
 
