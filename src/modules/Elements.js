@@ -1,6 +1,13 @@
 const icons = require('./Icons');
 const { ipcRenderer } = require('electron')
 
+const showAlert = (msg) => {
+  const alert = document.querySelector('body > span');
+  alert.innerHTML = msg;
+  alert.style.transform = 'translateX(-15vw)';
+  setTimeout(() => alert.style.transform = 'translateX(15vw)', 1300);
+};
+
 const createSvg = (icon) => {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute('xmlns', "http://www.w3.org/2000/svg");
@@ -116,14 +123,8 @@ const inputNewLIst = () => {
 
       const isListExist = thisListExist();
       if(isListExist){
-        const showAlert = () => {
-          const alert = document.querySelector('body > span');
-          alert.style.transform = 'translateX(-15vw)';
-          setTimeout(() => alert.style.transform = 'translateX(15vw)', 1300);
-        };
-        showAlert();
+        showAlert('essa lista já existe');
         input.value = '';
-
         return;
       };
 
@@ -173,4 +174,4 @@ const displayList = (list, callback) => {
   return li
 };
 
-module.exports = { buttonDelete, buttonEdit, inputTitle, inputNewLIst, inputCheck, buttonPlus, displayList };
+module.exports = { buttonDelete, buttonEdit, inputTitle, inputNewLIst, inputCheck, buttonPlus, displayList, showAlert };

@@ -13,10 +13,6 @@ nav{
   overflow-x: auto;
 }
 
-nav::-webkit-scrollbar{
-  opacity: 0;
-}
-
 nav > ul{
   width: 90%;
   display: flex;

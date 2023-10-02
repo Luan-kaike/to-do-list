@@ -50,20 +50,30 @@ const createNewItemField = () => {
   label.innerHTML = '';
 
   const callback = (input) => {
+    const tasks = document.querySelectorAll('aside > ul > li > input');
     const title = input.value
-    input.value = ''
-    ipcRenderer.send('API', {
-      params: `/lists/${currentList}/newItem`, 
-      method: 'post',
-      content: { title },
-      response: 'newItem'
-    });
+
+    console.log(tasks)
+    const isTaskExist = [...tasks]?.find(({value}) => value === title);
+
+    if(!isTaskExist){
+      input.value = ''
+      ipcRenderer.send('API', {
+        params: `/lists/${currentList}/newItem`, 
+        method: 'post',
+        content: { title },
+        response: 'newItem'
+      });
+    } else {
+      Elements.showAlert('essa tarefa já existe');
+    };
   };
 
   const input = document.createElement('input');
   input.placeholder = 'limpar a casa';
-  input.addEventListener('keydown', (e) => e.key === 'Enter' && input.value.trim()
-    ? callback(input) : null);
+  input.addEventListener('keydown', (e) => {
+    e.key === 'Enter' && input.value.trim()? callback(input) : null;
+  });
   label.appendChild(input);
 
   const btnAddCallback = () => input.value.trim()? callback(input) : null;
