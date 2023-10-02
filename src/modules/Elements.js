@@ -102,23 +102,33 @@ const inputTitle = (value, params, callback) => {
 
 const inputNewLIst = () => {
   const input = document.createElement('input');
-  const thisListExist = (list) => {
+  const thisListExist = () => {
     const arrayLi = document.querySelectorAll('nav > ul > li');
-    const thisListExist = [...arrayLi].find((l) => l.innerHTML === list);
+    const thisListExist = [...arrayLi].find((l) => {
+      const title = l.querySelector('input').value;
+      return title === input.value.trim();
+    });
     return thisListExist;
-  } 
+  };
   input.addEventListener('keydown', (e) => {
     if(e.key === 'Enter' && input.value.trim() !== ''){
       input.blur();
-      const ListExist = thisListExist(input.value);
 
-      if(ListExist){
-        input.style.border = '2px solid #f00';
+      const isListExist = thisListExist();
+      if(isListExist){
+        const showAlert = () => {
+          const alert = document.querySelector('body > span');
+          alert.style.transform = 'translateX(-15vw)';
+          setTimeout(() => alert.style.transform = 'translateX(15vw)', 1300);
+        };
+        showAlert();
+        input.value = '';
+
         return;
       };
 
       ipcRenderer.send('API', {
-        params: `/lists/${input.value}/newList`,
+        params: `/lists/${input.value.trim()}/newList`,
         method: 'post',
         response: 'newList'
       });

@@ -1,0 +1,18 @@
+
+body > span{
+  position: absolute;
+  display: flex;
+  z-index: 9;
+  top: 5vw;
+  right: -15vw;
+  max-width: 15vw;
+  width: max-content;
+  max-height: max-content;
+  padding: 2%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  border-right: none;
+  transition: .5s;
+}
