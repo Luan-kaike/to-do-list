@@ -10,7 +10,6 @@ require('../backend/main')
 app.whenReady().then(() => {
   const win = require('./CreateWindow.js');
   require('./CreateTray.js');
-  win.webContents.openDevTools();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) 

@@ -8,6 +8,7 @@ const createWindow = () => {
     minWidth: 600,
     minHeight: 600,
     frame: false,
+    icon: join(__dirname, 'public', 'assets', 'icon-win-512.ico'),
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
       contextIsolation: true,
