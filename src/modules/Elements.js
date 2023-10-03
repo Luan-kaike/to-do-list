@@ -34,11 +34,11 @@ const createSvg = (icon) => {
   path.setAttribute('d', icon.d);
   svg.appendChild(path);
 
-  return { path, svg };
+  return svg;
 };
 
 const buttonDelete = (params, callback) => {
-  const { svg } = createSvg(icons.trash);
+  const svg = createSvg(icons.trash);
   
   svg.addEventListener('click', () => {
     ipcRenderer.send('API', { 
@@ -52,7 +52,7 @@ const buttonDelete = (params, callback) => {
 };
 
 const buttonEdit = (input, callback) => {
-  const { svg } = createSvg(icons.edit);
+  const svg = createSvg(icons.edit);
 
   svg.addEventListener('click', (e) => {
     callback? callback(svg) : null;
@@ -64,7 +64,7 @@ const buttonEdit = (input, callback) => {
 };
 
 const buttonPlus = (callback) => {
-  const { svg } = createSvg(icons.plus);
+  const svg = createSvg(icons.plus);
 
   svg.addEventListener('click', () => {
     callback(svg);
@@ -76,13 +76,14 @@ const buttonPlus = (callback) => {
 const inputCheck = (checked, params) => {
   const icon = checked? icons.checkTrue : icons.checkFalse;
 
-  const { svg, path } = createSvg(icon);
+  const svg = createSvg(icon);
   svg.setAttribute('checked', '');
   svg.checked = checked;
 
   svg.addEventListener('click', () => {
     svg.checked = !svg.checked;
-
+    
+    const path = avg.querySelector('path');
     path.setAttribute('d', svg.checked? icons.checkTrue.d : icons.checkFalse.d);
 
     ipcRenderer.send('API', { 
@@ -194,4 +195,4 @@ const displayList = (list, callback) => {
   return li
 };
 
-module.exports = { buttonDelete, buttonEdit, inputTitle, inputNewLIst, inputCheck, buttonPlus, displayList, showAlert };
+module.exports = { buttonDelete, buttonEdit, inputTitle, inputNewLIst, inputCheck, buttonPlus, displayList, showAlert, createSvg };

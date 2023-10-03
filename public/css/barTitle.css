@@ -1,0 +1,36 @@
+header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--second-bg-color);
+  height: var(--width-barTitle);
+  width: 100vw;
+  padding-inline: calc(var(--width-barTitle) / 2); 
+  -webkit-user-select: none;
+}
+
+header > img{
+  cursor: pointer;
+}
+
+header > p{
+  color: var(--main-color);
+  display: flex;
+  justify-content: center;
+  -webkit-app-region: drag;
+  width: 100%;
+}
+
+header > span{
+  display: flex;
+  align-items: center;
+}
+
+header > span > svg{
+  fill: var(--main-color);
+  padding-left: calc(var(--width-barTitle) / 2);
+}
+
+header > span > svg:active{
+  fill-opacity: .8;
+}

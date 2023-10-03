@@ -35,6 +35,7 @@ ipcRenderer.on('populateNav', (e, data) => {
     nav.appendChild(li);
   });
 
+  Dom.initBarTitle();
   Dom.initVerticalBar();
 });
 
@@ -59,3 +60,4 @@ ipcRenderer.on('newList', (e, data) => {
   nav.appendChild(newList);
 });
 
+document.addEventListener('contextmenu', () => ipcRenderer.send('manipulate-window', 'reload'));

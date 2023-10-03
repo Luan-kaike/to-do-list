@@ -1,4 +1,4 @@
-import { initShortcuts } from './keyboardShortcuts.mjs'
+import { initShortcuts } from './KeyboardShortcuts.mjs';
 
 const init = () => {
   window.communicate.API({ 

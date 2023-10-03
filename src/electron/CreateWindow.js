@@ -5,12 +5,14 @@ const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
     height: 800,
+    minWidth: 600,
+    minHeight: 600,
+    frame: false,
     webPreferences: {
       preload: join(__dirname, 'preload.js'),
       contextIsolation: true,
       sandbox: false,
-      frame: false
-    }
+    },
   });
 
   win.loadFile('public/index.html');

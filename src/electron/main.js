@@ -9,7 +9,7 @@ require('../backend/main')
 
 app.whenReady().then(() => {
   const win = require('./CreateWindow.js');
-  const tray = require('./CreateTray.js');
+  require('./CreateTray.js');
   win.webContents.openDevTools();
 
   app.on('activate', () => {
@@ -27,5 +27,9 @@ app.whenReady().then(() => {
     http[method](params, content)
     .then(({data}) => e.sender.send(response, data))
     .catch(err => console.log(err));
+  });
+
+  ipcMain.on('manipulate-window', (e, action) => {
+    win[action]();
   });
 });

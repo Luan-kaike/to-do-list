@@ -51,12 +51,12 @@ const createNewItemField = () => {
 
   const callback = (input) => {
     const tasks = document.querySelectorAll('aside > ul > li > input');
-    const title = input.value
+    input.value = input.value.trim();
+    const title = input.value;
 
-    console.log(tasks)
     const isTaskExist = [...tasks]?.find(({value}) => value === title);
 
-    if(input.value.trim().length > 20){
+    if(input.value.length > 20){
       Elements.showAlert('máximo de 20 caracteres', 2.5);
     } else if(!isTaskExist){
       input.value = '';
@@ -86,7 +86,7 @@ const createNewItemField = () => {
 const initVerticalBar = () => {
   const label = document.querySelector('nav > label');
 
-  const input = Elements.inputNewLIst()
+  const input = Elements.inputNewLIst();
   input.placeholder = 'nova lista';
   label.appendChild(input);
 
@@ -98,4 +98,43 @@ const initVerticalBar = () => {
   label.appendChild(btnPlus);
 };
 
-module.exports = { populateElement, populateList, createNewItemField, initVerticalBar };
+const initBarTitle = () => {
+  const { close, minimize, windowFull, windowMin } = require('./Icons');
+  const iconsToTitleBar = [
+    {
+      icon: minimize,
+      callback: () => ipcRenderer.send('manipulate-window', 'minimize')
+    },
+    {
+      icon: windowFull,
+      callback: (svg) => {
+        const path = svg.querySelector('path');
+        const isMaximized = path.getAttribute('d') === windowFull.d;
+        const action = isMaximized? 'maximize' : 'restore';
+        path.setAttribute('d', isMaximized? windowMin.d : windowFull.d);
+        ipcRenderer.send('manipulate-window', action);
+      }
+    },
+    {
+      icon: close,
+      callback: () => ipcRenderer.send('manipulate-window', 'close')
+    }, 
+  ];
+  const span = document.querySelector('header > span');
+
+  iconsToTitleBar.forEach(i => {
+    const svg = Elements.createSvg(i.icon);
+    svg.addEventListener('click', () => {
+      i.callback(svg);
+    });
+
+    span.appendChild(svg);
+  });
+
+  const img = document.querySelector('header > img');
+  img.addEventListener('click', () => {
+    ipcRenderer.send('manipulate-window', 'reload');
+  });
+};
+
+module.exports = { populateElement, populateList, createNewItemField, initVerticalBar, initBarTitle };
