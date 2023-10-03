@@ -10,7 +10,14 @@ const createItemList = ({id, title, checked}) => {
   const inputCheck = Elements.inputCheck(checked, paramsEdit)
   item.appendChild(inputCheck);
 
-  const inputTitle = Elements.inputTitle(title, paramsEdit);
+  const callbackInputTitle = (input) => {
+    if(input.value.trim() !== '')
+      return true;
+    input.value = input.oldValue;
+    Elements.showAlert('uma tarefa não pode está vazia');
+    return false;
+  };
+  const inputTitle = Elements.inputTitle(title, paramsEdit, callbackInputTitle);
   item.appendChild(inputTitle);
 
   const buttonEdit = Elements.buttonEdit(inputTitle);

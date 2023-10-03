@@ -101,19 +101,23 @@ const inputCheck = (checked, params) => {
 const inputTitle = (value, params, callback) => {
   const inputTitle = document.createElement('input');
   inputTitle.value = value;
+  inputTitle.setAttribute('oldValue', '');
+  inputTitle.oldValue = value;
   inputTitle.disabled = true;
   const handleKeyDownInFocus = (e) => {
     inputTitle.disabled = e.key === 'Enter';
   }
   inputTitle.addEventListener('blur', () => {
-    callback? callback(inputTitle) : null;
-    ipcRenderer.send('API', {
-      params,
-      method: 'put',
-      content: {
-        title: inputTitle.value,
-      },
-    });
+    const addInBackend = callback? callback(inputTitle) : true;
+    !addInBackend??
+      ipcRenderer.send('API', {
+        params,
+        method: 'put',
+        content: {
+          title: inputTitle.value,
+        },
+      });
+    inputTitle.oldValue = inputTitle.value;
     inputTitle.disabled = true;
     inputTitle.removeEventListener('keydown', handleKeyDownInFocus);
   });
