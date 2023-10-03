@@ -46,7 +46,6 @@ app.put('/lists/:list/:id', (req, res) => {
   const list = req.params.list;
   const id = req.params.id;
   const mod = req.body;
-  console.log(list, id, mod)
 
   List.editObj(list, id, mod, false)
   .then(data => res.send(data))
