@@ -19,6 +19,7 @@ nav > ul{
   flex-direction: column;
   justify-content: center;
   list-style: none;
+  padding-bottom: 5vw;
 }
 
 nav > label{

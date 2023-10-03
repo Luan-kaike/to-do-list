@@ -6,7 +6,6 @@ header{
   height: var(--width-barTitle);
   width: 100vw;
   padding-inline: calc(var(--width-barTitle) / 2); 
-  -webkit-user-select: none;
 }
 
 header > img{

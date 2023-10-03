@@ -23,6 +23,8 @@ aside > label > input{
 
 aside > ul{
   margin: 5vw;
+  margin-bottom: 0;
+  padding-bottom: 5vw;
   width: 50%;
   list-style: none;
 }
@@ -30,9 +32,7 @@ aside > ul{
 aside > ul > li{
   display: flex;
   align-items: center;
-  background-color: var(--main-bg-color);
   padding: 5%;
-  border-radius: 15px;
   justify-content: space-between;
 }
 

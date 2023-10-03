@@ -51,6 +51,15 @@ body > div{
   align-items: center;
   width: calc(100vw - var(--width-verticalBar));
   height: calc(100vh - var(--width-barTitle));
+  max-height: calc(100vh - var(--width-barTitle));
+}
+
+nav,
+aside > ul{
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: linear-gradient(0deg, var(--third-color), #0000 15%)
 }
 
 nav::-webkit-scrollbar,

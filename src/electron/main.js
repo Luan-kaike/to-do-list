@@ -30,6 +30,6 @@ app.whenReady().then(() => {
   });
 
   ipcMain.on('manipulate-window', (e, action) => {
-    win[action]();
+    typeof action === 'object'? win[action[0]][action[1]]() : win[action]();
   });
 });

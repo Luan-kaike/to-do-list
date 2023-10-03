@@ -5,7 +5,10 @@ const { displayList } = require('../modules/Elements');
 contextBridge.exposeInMainWorld('communicate', {
   API: (params) => {
     ipcRenderer.send('API', params);
-  }
+  },
+  ACTION: (action) => {
+    ipcRenderer.send('manipulate-window', action);
+  },
 });
 
 const listCallback = (li) => {
@@ -60,4 +63,7 @@ ipcRenderer.on('newList', (e, data) => {
   nav.appendChild(newList);
 });
 
-document.addEventListener('contextmenu', () => ipcRenderer.send('manipulate-window', 'reload'));
+document.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  ipcRenderer.send('manipulate-window', ['webContents', 'openDevTools']);
+})
