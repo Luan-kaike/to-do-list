@@ -32,4 +32,9 @@ app.whenReady().then(() => {
   ipcMain.on('manipulate-window', (e, action) => {
     typeof action === 'object'? win[action[0]][action[1]]() : win[action]();
   });
+
+  ipcMain.on('open-link', (e, link) => {
+    const { shell } = require('electron');
+    shell.openExternal(link);
+  })
 });

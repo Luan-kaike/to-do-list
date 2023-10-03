@@ -1,9 +1,3 @@
 {
-  "deveres": [
-    {
-      "title": "limpar a casa",
-      "id": "limpar a casa--1",
-      "checked": false
-    }
-  ]
+  "devere": []
 }

@@ -12,7 +12,7 @@ aside > label{
 
 aside > label > svg{
   fill: var(--third-color);
-  height: 85%;
+  height: 90%;
 }
 
 aside > label > input{
@@ -25,7 +25,7 @@ aside > ul{
   margin: 5vw;
   margin-bottom: 0;
   padding-bottom: 5vw;
-  width: 50%;
+  width: 70%;
   list-style: none;
 }
 

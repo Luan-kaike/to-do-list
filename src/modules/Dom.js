@@ -56,8 +56,8 @@ const createNewItemField = () => {
 
     const isTaskExist = [...tasks]?.find(({value}) => value === title);
 
-    if(input.value.length > 20){
-      Elements.showAlert('máximo de 20 caracteres', 2.5);
+    if(input.value.length > 25){
+      Elements.showAlert('máximo de 25 caracteres', 2.5);
     } else if(!isTaskExist){
       input.value = '';
       ipcRenderer.send('API', {
@@ -137,4 +137,49 @@ const initBarTitle = () => {
   });
 };
 
-module.exports = { populateElement, populateList, createNewItemField, initVerticalBar, initBarTitle };
+const createContextMenu = () => {
+  const config = [
+    {
+      title: 'abrir console',
+      ipc: {
+        msg: 'manipulate-window',
+        data: ['webContents', 'openDevTools']
+      }
+    },
+    {
+      title: 'recarregar',
+      ipc: {
+        msg: 'manipulate-window',
+        data: 'reload'
+      }
+    },
+    {
+      title: 'line',
+    },
+    {
+      title: 'contato',
+      ipc: {
+        msg: 'open-link',
+        data: 'mailto:luangaymer828@gmail.com?subject=projeto: to-do-list'
+      }
+    },
+    {
+      title: 'meu github',
+      ipc: {
+        msg: 'open-link',
+        data: 'https://github.com/Luan-kaike'
+      }
+    },
+    {
+      title: 'meu linkedin',
+      ipc: {
+        msg: '',
+        data: ''
+      }
+    },
+  ];
+
+  Elements.contextMenu(config)
+}
+
+module.exports = { populateElement, populateList, createNewItemField, initVerticalBar, initBarTitle, createContextMenu };

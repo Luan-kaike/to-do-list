@@ -144,8 +144,8 @@ const inputNewLIst = () => {
         return;
       };
 
-      if(input.value.trim().length > 20){
-        showAlert('máximo de 20 caracteres', 2.5);
+      if(input.value.trim().length > 25){
+        showAlert('máximo de 25 caracteres', 2.5);
         return;
       };
 
@@ -195,4 +195,52 @@ const displayList = (list, callback) => {
   return li
 };
 
-module.exports = { buttonDelete, buttonEdit, inputTitle, inputNewLIst, inputCheck, buttonPlus, displayList, showAlert, createSvg };
+const contextMenu = (config) => {
+  const ul = document.createElement('ul');
+  window.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    const alterZIndex = (hidden) => {
+      ul.style.zIndex = hidden? -15 : 15;
+    };
+    const setXAndY = () => {
+      ul.X = ul.clientWidth;
+      ul.Y = ul.clientHeight;
+
+      e.pageX+ul.X > window.innerWidth? 
+        ul.style.left = `${window.innerWidth-ul.X}px`: 
+        ul.style.left = `${e.pageX}px`;
+
+      e.pageY+ul.Y > window.innerHeight? 
+        ul.style.top = `${window.innerHeight-ul.Y}px`: 
+        ul.style.top =  `${e.pageY}px`;
+    };
+
+    setXAndY();
+    alterZIndex(false);
+    window.addEventListener('click', () => {
+      alterZIndex(true);
+    })
+  });
+
+  config.forEach(({title, ipc}) => {
+    const li = document.createElement('li');
+
+    if(title !== 'line'){
+      const { msg, data } = ipc;
+
+      li.innerHTML = title;
+      li.addEventListener('click', () => {
+        ipcRenderer.send(msg, data);
+      });
+
+    }else {
+      li.classList.add('line');
+    };
+
+    ul.appendChild(li);
+  });
+
+  document.querySelector('body').appendChild(ul);
+};
+
+module.exports = { buttonDelete, buttonEdit, inputTitle, inputNewLIst, inputCheck, buttonPlus, displayList, showAlert, createSvg, contextMenu };

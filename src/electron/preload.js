@@ -39,6 +39,7 @@ ipcRenderer.on('populateNav', (e, data) => {
   });
 
   Dom.initBarTitle();
+  Dom.createContextMenu()
   Dom.initVerticalBar();
 });
 
@@ -62,8 +63,3 @@ ipcRenderer.on('newList', (e, data) => {
   const newList = displayList(data, listCallback);
   nav.appendChild(newList);
 });
-
-document.addEventListener('contextmenu', (e) => {
-  e.preventDefault();
-  ipcRenderer.send('manipulate-window', ['webContents', 'openDevTools']);
-})

@@ -24,7 +24,6 @@ const addEffectScroll = () => {
   [nav, aside].forEach(e => {
     const style = window.getComputedStyle(e)
     const color = style.getPropertyValue('background-color')
-    console.log(color)
     manipulateBg(e, color);
     e.addEventListener('scroll', () => {
       manipulateBg(e, color);
