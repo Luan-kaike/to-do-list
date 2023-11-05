@@ -60,6 +60,7 @@ nav > ul > li > input{
 nav > ul > li > input:focus{
   background-color: var(--main-bg-color);
   color: var(--second-color);
+  pointer-events: none;
 }
 
 nav > ul > li > svg{
